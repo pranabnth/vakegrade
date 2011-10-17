@@ -1,0 +1,835 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="VaKEGradeModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="VaKEGradeModelStoreContainer">
+          <EntitySet Name="Branch" EntityType="VaKEGradeModel.Store.Branch" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="BranchSubjectAssignment" EntityType="VaKEGradeModel.Store.BranchSubjectAssignment" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Grade" EntityType="VaKEGradeModel.Store.Grade" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Pupil" EntityType="VaKEGradeModel.Store.Pupil" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SchoolClass" EntityType="VaKEGradeModel.Store.SchoolClass" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SPF" EntityType="VaKEGradeModel.Store.SPF" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Subject" EntityType="VaKEGradeModel.Store.Subject" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SubjectArea" EntityType="VaKEGradeModel.Store.SubjectArea" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Teacher" EntityType="VaKEGradeModel.Store.Teacher" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TeacherSchoolClassAssignment" EntityType="VaKEGradeModel.Store.TeacherSchoolClassAssignment" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TeacherSubjectAssignment" EntityType="VaKEGradeModel.Store.TeacherSubjectAssignment" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="VoluntarySubjectAssignement" EntityType="VaKEGradeModel.Store.VoluntarySubjectAssignement" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_BranchSubjectAssignment_Branch" Association="VaKEGradeModel.Store.FK_BranchSubjectAssignment_Branch">
+            <End Role="Branch" EntitySet="Branch" />
+            <End Role="BranchSubjectAssignment" EntitySet="BranchSubjectAssignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BranchSubjectAssignment_Subject" Association="VaKEGradeModel.Store.FK_BranchSubjectAssignment_Subject">
+            <End Role="Subject" EntitySet="Subject" />
+            <End Role="BranchSubjectAssignment" EntitySet="BranchSubjectAssignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Grade_Pupil" Association="VaKEGradeModel.Store.FK_Grade_Pupil">
+            <End Role="Pupil" EntitySet="Pupil" />
+            <End Role="Grade" EntitySet="Grade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Grade_SubjectArea" Association="VaKEGradeModel.Store.FK_Grade_SubjectArea">
+            <End Role="SubjectArea" EntitySet="SubjectArea" />
+            <End Role="Grade" EntitySet="Grade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SPF_Pupil" Association="VaKEGradeModel.Store.FK_SPF_Pupil">
+            <End Role="Pupil" EntitySet="Pupil" />
+            <End Role="SPF" EntitySet="SPF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SPF_Subject" Association="VaKEGradeModel.Store.FK_SPF_Subject">
+            <End Role="Subject" EntitySet="Subject" />
+            <End Role="SPF" EntitySet="SPF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherSchoolClassAssignment_SchoolClass" Association="VaKEGradeModel.Store.FK_TeacherSchoolClassAssignment_SchoolClass">
+            <End Role="SchoolClass" EntitySet="SchoolClass" />
+            <End Role="TeacherSchoolClassAssignment" EntitySet="TeacherSchoolClassAssignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherSchoolClassAssignment_Teacher" Association="VaKEGradeModel.Store.FK_TeacherSchoolClassAssignment_Teacher">
+            <End Role="Teacher" EntitySet="Teacher" />
+            <End Role="TeacherSchoolClassAssignment" EntitySet="TeacherSchoolClassAssignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherSubjectAssignment_Subject" Association="VaKEGradeModel.Store.FK_TeacherSubjectAssignment_Subject">
+            <End Role="Subject" EntitySet="Subject" />
+            <End Role="TeacherSubjectAssignment" EntitySet="TeacherSubjectAssignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherSubjectAssignment_Teacher" Association="VaKEGradeModel.Store.FK_TeacherSubjectAssignment_Teacher">
+            <End Role="Teacher" EntitySet="Teacher" />
+            <End Role="TeacherSubjectAssignment" EntitySet="TeacherSubjectAssignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VoluntarySubjectAssignement_Pupil" Association="VaKEGradeModel.Store.FK_VoluntarySubjectAssignement_Pupil">
+            <End Role="Pupil" EntitySet="Pupil" />
+            <End Role="VoluntarySubjectAssignement" EntitySet="VoluntarySubjectAssignement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VoluntarySubjectAssignement_Subject" Association="VaKEGradeModel.Store.FK_VoluntarySubjectAssignement_Subject">
+            <End Role="Subject" EntitySet="Subject" />
+            <End Role="VoluntarySubjectAssignement" EntitySet="VoluntarySubjectAssignement" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Branch">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="BranchSubjectAssignment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="BranchID" Type="int" Nullable="false" />
+          <Property Name="SubjectID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Grade">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PupilID" Type="int" Nullable="false" />
+          <Property Name="SubjectAreaID" Type="int" Nullable="false" />
+          <Property Name="Value" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pupil">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Religion" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Gender" Type="nvarchar" Nullable="false" MaxLength="1" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SchoolClass">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="BranchID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SPF">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PupilID" Type="int" Nullable="false" />
+          <Property Name="SubjectID" Type="int" Nullable="false" />
+          <Property Name="Level" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="IsVoluntary" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SubjectArea">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="SubjectID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Teacher">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TeacherSchoolClassAssignment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TeacherID" Type="int" Nullable="false" />
+          <Property Name="ClassID" Type="int" Nullable="false" />
+          <Property Name="IsClassTeacher" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TeacherSubjectAssignment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TeacherID" Type="int" Nullable="false" />
+          <Property Name="SubjectID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VoluntarySubjectAssignement">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PupilID" Type="int" Nullable="false" />
+          <Property Name="SubjectID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_BranchSubjectAssignment_Branch">
+          <End Role="Branch" Type="VaKEGradeModel.Store.Branch" Multiplicity="1" />
+          <End Role="BranchSubjectAssignment" Type="VaKEGradeModel.Store.BranchSubjectAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BranchSubjectAssignment">
+              <PropertyRef Name="BranchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BranchSubjectAssignment_Subject">
+          <End Role="Subject" Type="VaKEGradeModel.Store.Subject" Multiplicity="1" />
+          <End Role="BranchSubjectAssignment" Type="VaKEGradeModel.Store.BranchSubjectAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BranchSubjectAssignment">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Grade_Pupil">
+          <End Role="Pupil" Type="VaKEGradeModel.Store.Pupil" Multiplicity="1" />
+          <End Role="Grade" Type="VaKEGradeModel.Store.Grade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pupil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Grade">
+              <PropertyRef Name="PupilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Grade_SubjectArea">
+          <End Role="SubjectArea" Type="VaKEGradeModel.Store.SubjectArea" Multiplicity="1" />
+          <End Role="Grade" Type="VaKEGradeModel.Store.Grade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubjectArea">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Grade">
+              <PropertyRef Name="SubjectAreaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SPF_Pupil">
+          <End Role="Pupil" Type="VaKEGradeModel.Store.Pupil" Multiplicity="1" />
+          <End Role="SPF" Type="VaKEGradeModel.Store.SPF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pupil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SPF">
+              <PropertyRef Name="PupilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SPF_Subject">
+          <End Role="Subject" Type="VaKEGradeModel.Store.Subject" Multiplicity="1" />
+          <End Role="SPF" Type="VaKEGradeModel.Store.SPF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SPF">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherSchoolClassAssignment_SchoolClass">
+          <End Role="SchoolClass" Type="VaKEGradeModel.Store.SchoolClass" Multiplicity="1" />
+          <End Role="TeacherSchoolClassAssignment" Type="VaKEGradeModel.Store.TeacherSchoolClassAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SchoolClass">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TeacherSchoolClassAssignment">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherSchoolClassAssignment_Teacher">
+          <End Role="Teacher" Type="VaKEGradeModel.Store.Teacher" Multiplicity="1" />
+          <End Role="TeacherSchoolClassAssignment" Type="VaKEGradeModel.Store.TeacherSchoolClassAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TeacherSchoolClassAssignment">
+              <PropertyRef Name="TeacherID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherSubjectAssignment_Subject">
+          <End Role="Subject" Type="VaKEGradeModel.Store.Subject" Multiplicity="1" />
+          <End Role="TeacherSubjectAssignment" Type="VaKEGradeModel.Store.TeacherSubjectAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TeacherSubjectAssignment">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherSubjectAssignment_Teacher">
+          <End Role="Teacher" Type="VaKEGradeModel.Store.Teacher" Multiplicity="1" />
+          <End Role="TeacherSubjectAssignment" Type="VaKEGradeModel.Store.TeacherSubjectAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TeacherSubjectAssignment">
+              <PropertyRef Name="TeacherID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VoluntarySubjectAssignement_Pupil">
+          <End Role="Pupil" Type="VaKEGradeModel.Store.Pupil" Multiplicity="1" />
+          <End Role="VoluntarySubjectAssignement" Type="VaKEGradeModel.Store.VoluntarySubjectAssignement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pupil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="VoluntarySubjectAssignement">
+              <PropertyRef Name="PupilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VoluntarySubjectAssignement_Subject">
+          <End Role="Subject" Type="VaKEGradeModel.Store.Subject" Multiplicity="1" />
+          <End Role="VoluntarySubjectAssignement" Type="VaKEGradeModel.Store.VoluntarySubjectAssignement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="VoluntarySubjectAssignement">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VaKEGradeModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="VaKEGradeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Branches" EntityType="VaKEGradeModel.Branch" />
+          <EntitySet Name="BranchSubjectAssignments" EntityType="VaKEGradeModel.BranchSubjectAssignment" />
+          <EntitySet Name="Grades" EntityType="VaKEGradeModel.Grade" />
+          <EntitySet Name="Pupils" EntityType="VaKEGradeModel.Pupil" />
+          <EntitySet Name="SchoolClasses" EntityType="VaKEGradeModel.SchoolClass" />
+          <EntitySet Name="SPFs" EntityType="VaKEGradeModel.SPF" />
+          <EntitySet Name="Subjects" EntityType="VaKEGradeModel.Subject" />
+          <EntitySet Name="SubjectAreas" EntityType="VaKEGradeModel.SubjectArea" />
+          <EntitySet Name="Teachers" EntityType="VaKEGradeModel.Teacher" />
+          <EntitySet Name="TeacherSchoolClassAssignments" EntityType="VaKEGradeModel.TeacherSchoolClassAssignment" />
+          <EntitySet Name="TeacherSubjectAssignments" EntityType="VaKEGradeModel.TeacherSubjectAssignment" />
+          <EntitySet Name="VoluntarySubjectAssignements" EntityType="VaKEGradeModel.VoluntarySubjectAssignement" />
+          <AssociationSet Name="FK_BranchSubjectAssignment_Branch" Association="VaKEGradeModel.FK_BranchSubjectAssignment_Branch">
+            <End Role="Branch" EntitySet="Branches" />
+            <End Role="BranchSubjectAssignment" EntitySet="BranchSubjectAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BranchSubjectAssignment_Subject" Association="VaKEGradeModel.FK_BranchSubjectAssignment_Subject">
+            <End Role="Subject" EntitySet="Subjects" />
+            <End Role="BranchSubjectAssignment" EntitySet="BranchSubjectAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Grade_Pupil" Association="VaKEGradeModel.FK_Grade_Pupil">
+            <End Role="Pupil" EntitySet="Pupils" />
+            <End Role="Grade" EntitySet="Grades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Grade_SubjectArea" Association="VaKEGradeModel.FK_Grade_SubjectArea">
+            <End Role="SubjectArea" EntitySet="SubjectAreas" />
+            <End Role="Grade" EntitySet="Grades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SPF_Pupil" Association="VaKEGradeModel.FK_SPF_Pupil">
+            <End Role="Pupil" EntitySet="Pupils" />
+            <End Role="SPF" EntitySet="SPFs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VoluntarySubjectAssignement_Pupil" Association="VaKEGradeModel.FK_VoluntarySubjectAssignement_Pupil">
+            <End Role="Pupil" EntitySet="Pupils" />
+            <End Role="VoluntarySubjectAssignement" EntitySet="VoluntarySubjectAssignements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherSchoolClassAssignment_SchoolClass" Association="VaKEGradeModel.FK_TeacherSchoolClassAssignment_SchoolClass">
+            <End Role="SchoolClass" EntitySet="SchoolClasses" />
+            <End Role="TeacherSchoolClassAssignment" EntitySet="TeacherSchoolClassAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SPF_Subject" Association="VaKEGradeModel.FK_SPF_Subject">
+            <End Role="Subject" EntitySet="Subjects" />
+            <End Role="SPF" EntitySet="SPFs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherSubjectAssignment_Subject" Association="VaKEGradeModel.FK_TeacherSubjectAssignment_Subject">
+            <End Role="Subject" EntitySet="Subjects" />
+            <End Role="TeacherSubjectAssignment" EntitySet="TeacherSubjectAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VoluntarySubjectAssignement_Subject" Association="VaKEGradeModel.FK_VoluntarySubjectAssignement_Subject">
+            <End Role="Subject" EntitySet="Subjects" />
+            <End Role="VoluntarySubjectAssignement" EntitySet="VoluntarySubjectAssignements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherSchoolClassAssignment_Teacher" Association="VaKEGradeModel.FK_TeacherSchoolClassAssignment_Teacher">
+            <End Role="Teacher" EntitySet="Teachers" />
+            <End Role="TeacherSchoolClassAssignment" EntitySet="TeacherSchoolClassAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherSubjectAssignment_Teacher" Association="VaKEGradeModel.FK_TeacherSubjectAssignment_Teacher">
+            <End Role="Teacher" EntitySet="Teachers" />
+            <End Role="TeacherSubjectAssignment" EntitySet="TeacherSubjectAssignments" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Branch">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="BranchSubjectAssignments" Relationship="VaKEGradeModel.FK_BranchSubjectAssignment_Branch" FromRole="Branch" ToRole="BranchSubjectAssignment" />
+        </EntityType>
+        <EntityType Name="BranchSubjectAssignment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BranchID" Type="Int32" Nullable="false" />
+          <Property Name="SubjectID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Branch" Relationship="VaKEGradeModel.FK_BranchSubjectAssignment_Branch" FromRole="BranchSubjectAssignment" ToRole="Branch" />
+          <NavigationProperty Name="Subject" Relationship="VaKEGradeModel.FK_BranchSubjectAssignment_Subject" FromRole="BranchSubjectAssignment" ToRole="Subject" />
+        </EntityType>
+        <EntityType Name="Grade">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PupilID" Type="Int32" Nullable="false" />
+          <Property Name="SubjectAreaID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Pupil" Relationship="VaKEGradeModel.FK_Grade_Pupil" FromRole="Grade" ToRole="Pupil" />
+          <NavigationProperty Name="SubjectArea" Relationship="VaKEGradeModel.FK_Grade_SubjectArea" FromRole="Grade" ToRole="SubjectArea" />
+          <Property Type="Int32" Name="Value" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pupil">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Religion" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Gender" Type="String" Nullable="false" MaxLength="1" Unicode="true" FixedLength="false" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Grades" Relationship="VaKEGradeModel.FK_Grade_Pupil" FromRole="Pupil" ToRole="Grade" />
+          <NavigationProperty Name="SPFs" Relationship="VaKEGradeModel.FK_SPF_Pupil" FromRole="Pupil" ToRole="SPF" />
+          <NavigationProperty Name="VoluntarySubjectAssignements" Relationship="VaKEGradeModel.FK_VoluntarySubjectAssignement_Pupil" FromRole="Pupil" ToRole="VoluntarySubjectAssignement" />
+        </EntityType>
+        <EntityType Name="SchoolClass">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
+          <Property Name="BranchID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TeacherSchoolClassAssignments" Relationship="VaKEGradeModel.FK_TeacherSchoolClassAssignment_SchoolClass" FromRole="SchoolClass" ToRole="TeacherSchoolClassAssignment" />
+        </EntityType>
+        <EntityType Name="SPF">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PupilID" Type="Int32" Nullable="false" />
+          <Property Name="SubjectID" Type="Int32" Nullable="false" />
+          <Property Name="Level" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Pupil" Relationship="VaKEGradeModel.FK_SPF_Pupil" FromRole="SPF" ToRole="Pupil" />
+          <NavigationProperty Name="Subject" Relationship="VaKEGradeModel.FK_SPF_Subject" FromRole="SPF" ToRole="Subject" />
+        </EntityType>
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="IsVoluntary" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="BranchSubjectAssignments" Relationship="VaKEGradeModel.FK_BranchSubjectAssignment_Subject" FromRole="Subject" ToRole="BranchSubjectAssignment" />
+          <NavigationProperty Name="SPFs" Relationship="VaKEGradeModel.FK_SPF_Subject" FromRole="Subject" ToRole="SPF" />
+          <NavigationProperty Name="TeacherSubjectAssignments" Relationship="VaKEGradeModel.FK_TeacherSubjectAssignment_Subject" FromRole="Subject" ToRole="TeacherSubjectAssignment" />
+          <NavigationProperty Name="VoluntarySubjectAssignements" Relationship="VaKEGradeModel.FK_VoluntarySubjectAssignement_Subject" FromRole="Subject" ToRole="VoluntarySubjectAssignement" />
+        </EntityType>
+        <EntityType Name="SubjectArea">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="SubjectID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Grades" Relationship="VaKEGradeModel.FK_Grade_SubjectArea" FromRole="SubjectArea" ToRole="Grade" />
+        </EntityType>
+        <EntityType Name="Teacher">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="TeacherSchoolClassAssignments" Relationship="VaKEGradeModel.FK_TeacherSchoolClassAssignment_Teacher" FromRole="Teacher" ToRole="TeacherSchoolClassAssignment" />
+          <NavigationProperty Name="TeacherSubjectAssignments" Relationship="VaKEGradeModel.FK_TeacherSubjectAssignment_Teacher" FromRole="Teacher" ToRole="TeacherSubjectAssignment" />
+        </EntityType>
+        <EntityType Name="TeacherSchoolClassAssignment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TeacherID" Type="Int32" Nullable="false" />
+          <Property Name="ClassID" Type="Int32" Nullable="false" />
+          <Property Name="IsClassTeacher" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="SchoolClass" Relationship="VaKEGradeModel.FK_TeacherSchoolClassAssignment_SchoolClass" FromRole="TeacherSchoolClassAssignment" ToRole="SchoolClass" />
+          <NavigationProperty Name="Teacher" Relationship="VaKEGradeModel.FK_TeacherSchoolClassAssignment_Teacher" FromRole="TeacherSchoolClassAssignment" ToRole="Teacher" />
+        </EntityType>
+        <EntityType Name="TeacherSubjectAssignment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TeacherID" Type="Int32" Nullable="false" />
+          <Property Name="SubjectID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Subject" Relationship="VaKEGradeModel.FK_TeacherSubjectAssignment_Subject" FromRole="TeacherSubjectAssignment" ToRole="Subject" />
+          <NavigationProperty Name="Teacher" Relationship="VaKEGradeModel.FK_TeacherSubjectAssignment_Teacher" FromRole="TeacherSubjectAssignment" ToRole="Teacher" />
+        </EntityType>
+        <EntityType Name="VoluntarySubjectAssignement">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PupilID" Type="Int32" Nullable="false" />
+          <Property Name="SubjectID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Pupil" Relationship="VaKEGradeModel.FK_VoluntarySubjectAssignement_Pupil" FromRole="VoluntarySubjectAssignement" ToRole="Pupil" />
+          <NavigationProperty Name="Subject" Relationship="VaKEGradeModel.FK_VoluntarySubjectAssignement_Subject" FromRole="VoluntarySubjectAssignement" ToRole="Subject" />
+        </EntityType>
+        <Association Name="FK_BranchSubjectAssignment_Branch">
+          <End Role="Branch" Type="VaKEGradeModel.Branch" Multiplicity="1" />
+          <End Role="BranchSubjectAssignment" Type="VaKEGradeModel.BranchSubjectAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BranchSubjectAssignment">
+              <PropertyRef Name="BranchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BranchSubjectAssignment_Subject">
+          <End Role="Subject" Type="VaKEGradeModel.Subject" Multiplicity="1" />
+          <End Role="BranchSubjectAssignment" Type="VaKEGradeModel.BranchSubjectAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BranchSubjectAssignment">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Grade_Pupil">
+          <End Role="Pupil" Type="VaKEGradeModel.Pupil" Multiplicity="1" />
+          <End Role="Grade" Type="VaKEGradeModel.Grade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pupil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Grade">
+              <PropertyRef Name="PupilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Grade_SubjectArea">
+          <End Role="SubjectArea" Type="VaKEGradeModel.SubjectArea" Multiplicity="1" />
+          <End Role="Grade" Type="VaKEGradeModel.Grade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubjectArea">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Grade">
+              <PropertyRef Name="SubjectAreaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SPF_Pupil">
+          <End Role="Pupil" Type="VaKEGradeModel.Pupil" Multiplicity="1" />
+          <End Role="SPF" Type="VaKEGradeModel.SPF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pupil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SPF">
+              <PropertyRef Name="PupilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VoluntarySubjectAssignement_Pupil">
+          <End Role="Pupil" Type="VaKEGradeModel.Pupil" Multiplicity="1" />
+          <End Role="VoluntarySubjectAssignement" Type="VaKEGradeModel.VoluntarySubjectAssignement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pupil">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="VoluntarySubjectAssignement">
+              <PropertyRef Name="PupilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherSchoolClassAssignment_SchoolClass">
+          <End Role="SchoolClass" Type="VaKEGradeModel.SchoolClass" Multiplicity="1" />
+          <End Role="TeacherSchoolClassAssignment" Type="VaKEGradeModel.TeacherSchoolClassAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SchoolClass">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TeacherSchoolClassAssignment">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SPF_Subject">
+          <End Role="Subject" Type="VaKEGradeModel.Subject" Multiplicity="1" />
+          <End Role="SPF" Type="VaKEGradeModel.SPF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SPF">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherSubjectAssignment_Subject">
+          <End Role="Subject" Type="VaKEGradeModel.Subject" Multiplicity="1" />
+          <End Role="TeacherSubjectAssignment" Type="VaKEGradeModel.TeacherSubjectAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TeacherSubjectAssignment">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VoluntarySubjectAssignement_Subject">
+          <End Role="Subject" Type="VaKEGradeModel.Subject" Multiplicity="1" />
+          <End Role="VoluntarySubjectAssignement" Type="VaKEGradeModel.VoluntarySubjectAssignement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="VoluntarySubjectAssignement">
+              <PropertyRef Name="SubjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherSchoolClassAssignment_Teacher">
+          <End Role="Teacher" Type="VaKEGradeModel.Teacher" Multiplicity="1" />
+          <End Role="TeacherSchoolClassAssignment" Type="VaKEGradeModel.TeacherSchoolClassAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TeacherSchoolClassAssignment">
+              <PropertyRef Name="TeacherID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherSubjectAssignment_Teacher">
+          <End Role="Teacher" Type="VaKEGradeModel.Teacher" Multiplicity="1" />
+          <End Role="TeacherSubjectAssignment" Type="VaKEGradeModel.TeacherSubjectAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TeacherSubjectAssignment">
+              <PropertyRef Name="TeacherID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VaKEGradeModelStoreContainer" CdmEntityContainer="VaKEGradeEntities">
+          <EntitySetMapping Name="Branches"><EntityTypeMapping TypeName="VaKEGradeModel.Branch"><MappingFragment StoreEntitySet="Branch">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="BranchSubjectAssignments"><EntityTypeMapping TypeName="VaKEGradeModel.BranchSubjectAssignment"><MappingFragment StoreEntitySet="BranchSubjectAssignment">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="BranchID" ColumnName="BranchID" />
+            <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Grades"><EntityTypeMapping TypeName="VaKEGradeModel.Grade"><MappingFragment StoreEntitySet="Grade">
+            <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="PupilID" ColumnName="PupilID" />
+            <ScalarProperty Name="SubjectAreaID" ColumnName="SubjectAreaID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Pupils"><EntityTypeMapping TypeName="VaKEGradeModel.Pupil"><MappingFragment StoreEntitySet="Pupil">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+            <ScalarProperty Name="LastName" ColumnName="LastName" />
+            <ScalarProperty Name="Religion" ColumnName="Religion" />
+            <ScalarProperty Name="Gender" ColumnName="Gender" />
+            <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="SchoolClasses"><EntityTypeMapping TypeName="VaKEGradeModel.SchoolClass"><MappingFragment StoreEntitySet="SchoolClass">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="BranchID" ColumnName="BranchID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="SPFs"><EntityTypeMapping TypeName="VaKEGradeModel.SPF"><MappingFragment StoreEntitySet="SPF">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="PupilID" ColumnName="PupilID" />
+            <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+            <ScalarProperty Name="Level" ColumnName="Level" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Subjects"><EntityTypeMapping TypeName="VaKEGradeModel.Subject"><MappingFragment StoreEntitySet="Subject">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="IsVoluntary" ColumnName="IsVoluntary" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="SubjectAreas"><EntityTypeMapping TypeName="VaKEGradeModel.SubjectArea"><MappingFragment StoreEntitySet="SubjectArea">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Teachers"><EntityTypeMapping TypeName="VaKEGradeModel.Teacher"><MappingFragment StoreEntitySet="Teacher">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+            <ScalarProperty Name="LastName" ColumnName="LastName" />
+            <ScalarProperty Name="UserName" ColumnName="UserName" />
+            <ScalarProperty Name="Password" ColumnName="Password" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="TeacherSchoolClassAssignments"><EntityTypeMapping TypeName="VaKEGradeModel.TeacherSchoolClassAssignment"><MappingFragment StoreEntitySet="TeacherSchoolClassAssignment">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="TeacherID" ColumnName="TeacherID" />
+            <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+            <ScalarProperty Name="IsClassTeacher" ColumnName="IsClassTeacher" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="TeacherSubjectAssignments"><EntityTypeMapping TypeName="VaKEGradeModel.TeacherSubjectAssignment"><MappingFragment StoreEntitySet="TeacherSubjectAssignment">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="TeacherID" ColumnName="TeacherID" />
+            <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="VoluntarySubjectAssignements"><EntityTypeMapping TypeName="VaKEGradeModel.VoluntarySubjectAssignement"><MappingFragment StoreEntitySet="VoluntarySubjectAssignement">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="PupilID" ColumnName="PupilID" />
+            <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="VaKEGradeModel" ZoomLevel="74">
+        <EntityTypeShape EntityType="VaKEGradeModel.Branch" Width="1.5" PointX="0.75" PointY="10" Height="1.5956835937499996" IsExpanded="true" />
+        <EntityTypeShape EntityType="VaKEGradeModel.BranchSubjectAssignment" Width="1.5" PointX="3" PointY="6.875" Height="1.9802864583333344" IsExpanded="true" />
+        <EntityTypeShape EntityType="VaKEGradeModel.Grade" Width="1.5" PointX="5.625" PointY="1" Height="2.172587890625" IsExpanded="true" />
+        <EntityTypeShape EntityType="VaKEGradeModel.Pupil" Width="1.5" PointX="3.125" PointY="3.625" Height="2.7494921874999996" IsExpanded="true" />
+        <EntityTypeShape EntityType="VaKEGradeModel.SchoolClass" Width="1.5" PointX="0.75" PointY="16" Height="1.7879850260416657" IsExpanded="true" />
+        <EntityTypeShape EntityType="VaKEGradeModel.SPF" Width="1.5" PointX="3.125" PointY="0.75" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="VaKEGradeModel.Subject" Width="1.5" PointX="0.75" PointY="6.625" Height="2.3648893229166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="VaKEGradeModel.SubjectArea" Width="1.5" PointX="0.75" PointY="19.375" Height="1.7879850260416674" IsExpanded="true" />
+        <EntityTypeShape EntityType="VaKEGradeModel.Teacher" Width="1.5" PointX="0.75" PointY="12.625" Height="2.3648893229166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="VaKEGradeModel.TeacherSchoolClassAssignment" Width="1.5" PointX="3" PointY="12.75" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="VaKEGradeModel.TeacherSubjectAssignment" Width="1.5" PointX="3" PointY="9.875" Height="1.9802864583333353" IsExpanded="true" />
+        <EntityTypeShape EntityType="VaKEGradeModel.VoluntarySubjectAssignement" Width="1.5" PointX="6" PointY="6.875" Height="1.9802864583333317" IsExpanded="true" />
+        <AssociationConnector Association="VaKEGradeModel.FK_BranchSubjectAssignment_Branch" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="10.001152846153847" />
+          <ConnectorPoint PointX="2.625" PointY="9.6261528461538468" />
+          <ConnectorPoint PointX="2.625" PointY="7.8651432291666676" />
+          <ConnectorPoint PointX="3" PointY="7.8651432291666676" />
+        </AssociationConnector>
+        <AssociationConnector Association="VaKEGradeModel.FK_BranchSubjectAssignment_Subject" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="7.3075716145833338" />
+          <ConnectorPoint PointX="3" PointY="7.3075716145833338" />
+        </AssociationConnector>
+        <AssociationConnector Association="VaKEGradeModel.FK_Grade_Pupil" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.625" PointY="4.464892519531249" />
+          <ConnectorPoint PointX="5.697916666666667" PointY="4.4648925195312481" />
+          <ConnectorPoint PointX="5.864583333333333" PointY="4.464892519531249" />
+          <ConnectorPoint PointX="6.375" PointY="4.464892519531249" />
+          <ConnectorPoint PointX="6.375" PointY="3.172587890625" />
+        </AssociationConnector>
+        <AssociationConnector Association="VaKEGradeModel.FK_Grade_SubjectArea" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="20.268992513020834" />
+          <ConnectorPoint PointX="5.78125" PointY="20.268992513020834" />
+          <ConnectorPoint PointX="5.78125" PointY="3.172587890625" />
+        </AssociationConnector>
+        <AssociationConnector Association="VaKEGradeModel.FK_SPF_Pupil" ManuallyRouted="false">
+          <ConnectorPoint PointX="3.875" PointY="3.625" />
+          <ConnectorPoint PointX="3.875" PointY="2.9225878906249996" />
+        </AssociationConnector>
+        <AssociationConnector Association="VaKEGradeModel.FK_VoluntarySubjectAssignement_Pupil" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.625" PointY="5.3672900390625" />
+          <ConnectorPoint PointX="5.697916666666667" PointY="5.3672900390624987" />
+          <ConnectorPoint PointX="5.864583333333333" PointY="5.3672900390625" />
+          <ConnectorPoint PointX="7.15625" PointY="5.3672900390625" />
+          <ConnectorPoint PointX="7.15625" PointY="6.875" />
+        </AssociationConnector>
+        <AssociationConnector Association="VaKEGradeModel.FK_TeacherSchoolClassAssignment_SchoolClass" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="16.893992513020834" />
+          <ConnectorPoint PointX="3.75" PointY="16.893992513020834" />
+          <ConnectorPoint PointX="3.75" PointY="14.922587890625" />
+        </AssociationConnector>
+        <AssociationConnector Association="VaKEGradeModel.FK_SPF_Subject" ManuallyRouted="false">
+          <ConnectorPoint PointX="1.5" PointY="6.625" />
+          <ConnectorPoint PointX="1.5" PointY="1.8362939453124998" />
+          <ConnectorPoint PointX="3.125" PointY="1.8362939453124998" />
+        </AssociationConnector>
+        <AssociationConnector Association="VaKEGradeModel.FK_TeacherSubjectAssignment_Subject" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.2257692307692305" PointY="8.9898893229166674" />
+          <ConnectorPoint PointX="2.5635876957004622" PointY="9.2997462442078476" />
+          <ConnectorPoint PointX="2.6864123042995383" PointY="9.4124045474982019" />
+          <ConnectorPoint PointX="2.7291666666666665" PointY="9.4516200921474365" />
+          <ConnectorPoint PointX="2.7291666666666665" PointY="10.865143229166668" />
+          <ConnectorPoint PointX="3" PointY="10.865143229166668" />
+        </AssociationConnector>
+        <AssociationConnector Association="VaKEGradeModel.FK_VoluntarySubjectAssignement_Subject" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="8.958734476762821" />
+          <ConnectorPoint PointX="2.5660744349011213" PointY="9.2748089116639409" />
+          <ConnectorPoint PointX="2.6839255650988791" PointY="9.3926600418617" />
+          <ConnectorPoint PointX="2.90625" PointY="9.614984476762821" />
+          <ConnectorPoint PointX="2.90625" PointY="9.2302864583333317" />
+          <ConnectorPoint PointX="5.6261528461538468" PointY="9.2302864583333317" />
+          <ConnectorPoint PointX="5.7223244349011209" PointY="9.1341148695860568" />
+          <ConnectorPoint PointX="5.8401755650988791" PointY="9.0162637393883" />
+          <ConnectorPoint PointX="6.0011528461538459" PointY="8.8552864583333317" />
+        </AssociationConnector>
+        <AssociationConnector Association="VaKEGradeModel.FK_TeacherSchoolClassAssignment_Teacher" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="13.8362939453125" />
+          <ConnectorPoint PointX="3" PointY="13.8362939453125" />
+        </AssociationConnector>
+        <AssociationConnector Association="VaKEGradeModel.FK_TeacherSubjectAssignment_Teacher" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="12.626152846153847" />
+          <ConnectorPoint PointX="2.625" PointY="12.251152846153847" />
+          <ConnectorPoint PointX="2.625" PointY="11.391466843750003" />
+          <ConnectorPoint PointX="3" PointY="11.391466843750003" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

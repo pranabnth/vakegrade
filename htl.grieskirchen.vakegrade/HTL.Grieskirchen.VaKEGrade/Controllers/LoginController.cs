@@ -6,26 +6,20 @@ using System.Web.Mvc;
 using System.Collections.Specialized;
 using System.Configuration;
 
-namespace VaKEGrade.Controllers
+namespace HTL.Grieskirchen.VaKEGrade.Models
 {
-    [HandleError]
-    public class HomeController : Controller
+    public class LoginController : Controller
     {
+        //
+        // GET: /Login/
+
+        public static string PrimaryDomain {
+            get { return "localhost:4895"; }
+        }
+
         public ActionResult Index()
         {
-            ViewData["Message"] = "Welcome to ASP.NET MVC!";
-
             return View();
-        }
-
-        public ActionResult About()
-        {
-            return View();
-        }
-
-        public static string PrimaryDomain
-        {
-            get { return "localhost:4895"; }
         }
 
         static void CheckToSecurePage(System.Web.HttpContext Context)
@@ -64,5 +58,6 @@ namespace VaKEGrade.Controllers
                 Context.Response.Redirect("http://" + PrimaryDomain + Context.Request.RawUrl);
             }
         }
+
     }
 }
