@@ -13,6 +13,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
         public ActionResult Index()
         {
+            
             return View();
         }
 
