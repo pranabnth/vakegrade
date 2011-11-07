@@ -22,6 +22,14 @@ namespace VaKEGrade
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
 
+            routes.MapRoute(
+                "Upload-Config",
+                "Admin/Index/",
+                new { controller = "Admin", action = "Index", id=UrlParameter.Optional },
+                new { httpMethod = new HttpMethodConstraint("POST") }
+            );
+
+
         }
 
         protected void Application_Start()

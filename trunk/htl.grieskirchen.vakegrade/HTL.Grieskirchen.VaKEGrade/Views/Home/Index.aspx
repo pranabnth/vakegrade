@@ -7,7 +7,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     
     
-    <form id="form1" runat="server">
+   
     
     
     <div>
@@ -31,7 +31,11 @@
             </tr>
         </table>
     </div>
+    <%Html.BeginRouteForm("Default", new {controller = "Admin", action = "Index"});%>
+
+    <input class="button" type="submit"/>
+    <%Html.EndForm(); %>
     
-    </form>
+   
     
 </asp:Content>
