@@ -69,8 +69,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AuthentificationController.cs" />
+    <Compile Include="Controllers\ClassTeacherController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TeacherController.cs" />
     <Compile Include="Database\Exceptions\DuplicateUserException.cs" />
+    <Compile Include="Database\Exceptions\EntryNotFoundException.cs" />
     <Compile Include="Database\VaKEGradeModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
