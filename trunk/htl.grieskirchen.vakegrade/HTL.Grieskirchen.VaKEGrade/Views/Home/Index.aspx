@@ -8,7 +8,10 @@
     
     
     
-    
+    <%if(ViewData["error"]!=null){%>
+        
+          <p><%: ViewData["error"].ToString()%></p>
+        <%} %>
     
     <div>
     <h2>Melden sie sich bitte mit ihrem Benutzernamen und ihrem Passwort an:</h2>
@@ -20,7 +23,7 @@
                 Benutzername:
                     </td>
                 <td>
-                <input type="text" name="tbUsername" />
+                <input class="textbox" type="text" name="tbUsername" />
                 </td>
                 </tr>
                 <tr>
@@ -28,13 +31,13 @@
                 Passwort:
                 </td>
                 <td>
-                <input type="password" name="tbPassword"/>
+                <input class="textbox" type="password" name="tbPassword"/>
                 
                 </td>
                 </tr>
                 <tr>
                     <td colspan="2" width="100%">
-                        <input type="submit" value="Login" />
+                        <input class="button" type="submit" value="Login" />
                     </td>
                 </tr>
             </table>

@@ -11,10 +11,11 @@
 
 
 
-    <link href="../../Scripts/jquery-1.6.4.js" type="text/javascript" />
+    
     
     <link href="../../Scripts/grid.locale-de.js" type="text/javascript" />
     <link href="../../Scripts/jquery.jqGrid.min.js" type="text/javascript" />
+    <asp:ContentPlaceHolder ID="ScriptContent" runat="server" />
 </head>
 
 <body>
