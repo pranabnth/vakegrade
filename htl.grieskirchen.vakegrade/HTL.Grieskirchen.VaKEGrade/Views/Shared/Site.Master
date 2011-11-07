@@ -7,19 +7,20 @@
 
     
     <link href="../../Content/Style.css" rel="stylesheet" type="text/css" />
-    <link href="../../Content/ui.jqgrid.css" rel="stylesheet" type="text/css" media="screen" />
+    <%--<link href="../../Content/ui.jqgrid.css" rel="stylesheet" type="text/css" media="screen" />
 
 
 
-    
     
     <link href="../../Scripts/grid.locale-de.js" type="text/javascript" />
-    <link href="../../Scripts/jquery.jqGrid.min.js" type="text/javascript" />
-    <asp:ContentPlaceHolder ID="ScriptContent" runat="server" />
+    <link href="../../Scripts/jquery.jqGrid.min.js" type="text/javascript" />--%>
+    
+
+    
 </head>
 
 <body>
-
+<asp:ContentPlaceHolder ID="ScriptContent" runat="server" />
     <div class="page">
     <table>
     <tr>

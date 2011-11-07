@@ -48,10 +48,6 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
             ViewData["error"] = "Bitte melden sie sich am System an";
             return Redirect("/Home/");
             
-            
-            
-
-            
         }
 
 

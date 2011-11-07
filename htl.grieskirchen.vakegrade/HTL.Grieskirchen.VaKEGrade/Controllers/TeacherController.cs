@@ -13,7 +13,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
         public ActionResult Index()
         {
-            if (Session["User"] != null)
+            if (IsAuthorized())
             {
                 return View();
             }
