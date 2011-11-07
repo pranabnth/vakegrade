@@ -30,10 +30,20 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
             get { return SingletonCreator.uniqueInstance; }
         }
 
+        /// <summary>
+        /// Commits all changes to made to the database
+        /// </summary>
         public void Update() {
             entities.SaveChanges();
         }
 
+
+        #region Teacher
+        /// <summary>
+        /// Checks if the given username already exists.
+        /// </summary>
+        /// <param name="username">The username to be checked</param>
+        /// <returns>True if the username exists, false if it doesn't</returns>
         public bool UserExists(string username)
         {
             Teacher teacher = (from t in entities.Teachers
@@ -42,20 +52,39 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
             return teacher != null;
         }
 
+        /// <summary>
+        /// Check if the given username-password combination is valid
+        /// </summary>
+        /// <param name="username">The username to be checked</param>
+        /// <param name="password">The password to be checked</param>
+        /// <returns>True if the combination is valid, false if it isn't</returns>
         public bool UserIsValid(string username, string password) {
-            Teacher teacher = (from t in entities.Teachers
-                               where t.UserName == username &&
-                               t.Password == password
-                               select t).FirstOrDefault();
-            return teacher != null;
+            return GetTeacher(username,password) != null;
         }
 
+        public bool IsUserClassTeacher(Teacher teacher) {
+            return (from sca in teacher.TeacherSchoolClassAssignments
+                    where sca.IsClassTeacher == true
+                    select sca).Count() > 0;
+        }
+
+        /// <summary>
+        /// Returns a teacher with the given ID
+        /// </summary>
+        /// <param name="id">The ID of the teacher-object</param>
+        /// <returns>The teacher object associated with the given ID</returns>
         public Teacher GetTeacher(int id) {
             return (from t in entities.Teachers
                     where t.ID == id
                     select t).FirstOrDefault();
         }
 
+        /// <summary>
+        /// Returns a teacher with the given username-password combination
+        /// </summary>
+        /// <param name="username">The username of the teacher</param>
+        /// <param name="password">The password of the teacher</param>
+        /// <returns>The teacher-object associated with the given username-password combination</returns>
         public Teacher GetTeacher(string username, string password)
         {
             return (from t in entities.Teachers
@@ -64,10 +93,19 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
                                select t).FirstOrDefault();            
         }
 
+        /// <summary>
+        /// Returns all teacher-objects
+        /// </summary>
+        /// <returns>A list of all teacher-objects</returns>
         public IQueryable<Teacher> GetTeachers() {
             return entities.Teachers;
         }
 
+        /// <summary>
+        /// Adds a teacher to the database
+        /// </summary>
+        /// <param name="teacher">The teacher-object to be added</param>
+        /// <exception cref="DuplicateUserException"></exception>
         public void AddTeacher(Teacher teacher) {
             if (!UserExists(teacher.UserName))
             {
@@ -79,13 +117,202 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
             }
         }
 
-        public void DeleteTeacher(int id) {
-            Teacher teacher = (from t in entities.Teachers
-                               where t.ID == id
-                               select t).FirstOrDefault();
+        /// <summary>
+        /// Deletes the teacher with the given ID
+        /// </summary>
+        /// <param name="id">The ID of the teacher-object</param>
+        /// <exception cref="EntryNotFoundException"></exception>
+        public void DeleteTeacher(int id)
+        {
+            Teacher teacher = GetTeacher(id);
+            if (teacher == null)
+                throw new EntryNotFoundException("User with ID \"" + id + "\" does not exist");
+            teacher.TeacherSchoolClassAssignments.Clear();
+            teacher.TeacherSubjectAssignments.Clear();
+
             entities.DeleteObject(teacher);
             entities.SaveChanges();
         }
+        #endregion
 
+        #region Pupil
+
+        public Pupil GetPupil(int id) {
+            return (from pupil in entities.Pupils
+                    where pupil.ID == id
+                    select pupil).FirstOrDefault();
+        }
+
+        public IQueryable<Pupil> GetPupils() {
+            return entities.Pupils;
+        }
+
+        public void AddPupil(Pupil pupil) {
+            entities.AddToPupils(pupil);
+            entities.SaveChanges();
+        }
+
+        public void DeletePupil(int id) {
+            Pupil pupil = GetPupil(id);
+            if (pupil == null)
+                throw new EntryNotFoundException("Pupil with ID \"" + id + "\" does not exist");
+            pupil.VoluntarySubjectAssignements.Clear();
+            pupil.Grades.Clear();
+            entities.DeleteObject(pupil);
+            entities.SaveChanges();
+        }
+
+        #endregion
+
+        #region SchoolClass
+
+        public SchoolClass GetClass(int id) {
+            return (from schoolclass in entities.SchoolClasses
+                    where schoolclass.ID == id
+                    select schoolclass).FirstOrDefault();
+        }
+
+        public IQueryable<SchoolClass> GetClasses() {
+            return entities.SchoolClasses;
+        }
+
+        public void DeleteClass(int id)
+        {
+            SchoolClass schoolClass = GetClass(id);
+            if (schoolClass == null)
+                throw new EntryNotFoundException("Class with ID \"" + id + "\" does not exist");
+            schoolClass.Pupils.Clear();
+            schoolClass.TeacherSchoolClassAssignments.Clear();
+            entities.DeleteObject(schoolClass);
+            entities.SaveChanges();
+        }
+
+        #endregion
+
+        #region Subject
+
+        public Subject GetSubject(int id) {
+            return (from subject in entities.Subjects
+                    where subject.ID == id
+                    select subject).FirstOrDefault();
+        }
+
+        public IQueryable<Subject> GetSubjects() {
+            return entities.Subjects;
+        }
+
+        public void AddSubject(Subject subject) {
+            entities.AddToSubjects(subject);
+            entities.SaveChanges();
+        }
+
+        public void DeleteSubject(int id) {
+            Subject subject = GetSubject(id);
+            if(subject == null)
+                throw new EntryNotFoundException("Subject with ID \"" + id + "\" does not exist");
+            subject.TeacherSubjectAssignments.Clear();
+            subject.VoluntarySubjectAssignements.Clear();
+            entities.DeleteObject(subject);
+            entities.SaveChanges();
+        }
+                
+        #endregion
+
+        #region Branch
+
+        public Branch GetBranch(int id) {
+            return (from branch in entities.Branches
+                    where branch.ID == id
+                    select branch).FirstOrDefault();
+        }
+
+        public IQueryable<Branch> GetBranches() {
+            return entities.Branches;
+        }
+
+        public void AddBranch(Branch branch) {
+            entities.AddToBranches(branch);
+            entities.SaveChanges();
+        }
+
+        public void DeleteBranch(int id) {
+            Branch branch = GetBranch(id);
+            if (branch == null)
+                throw new EntryNotFoundException("Branch with ID \"" + id + "\" does not exist");
+            branch.BranchSubjectAssignments.Clear();
+            entities.DeleteObject(branch);
+            entities.SaveChanges();
+        }
+
+        #endregion
+
+        #region SubjectArea
+
+        public SubjectArea GetSubjectArea(int id) {
+            return (from subjectArea in entities.SubjectAreas
+                    where subjectArea.ID == id
+                    select subjectArea).FirstOrDefault();
+        }
+
+        public IQueryable<SubjectArea> GetSubjectAreas() {
+            return entities.SubjectAreas;
+        }
+
+        public void AddSubjectArea(SubjectArea subjectArea) {
+            entities.AddToSubjectAreas(subjectArea);
+            entities.SaveChanges();
+        }
+
+        public void DeleteSubjectArea(int id) {
+            SubjectArea subjectArea = GetSubjectArea(id);
+            if(subjectArea == null)
+                throw new EntryNotFoundException("Subject Area with ID \"" + id + "\" does not exist");
+            entities.DeleteObject(subjectArea);
+            entities.SaveChanges();
+        }            
+        
+        #endregion
+
+
+        public void AssignVoluntarySubject(Pupil pupil, Subject subject) {
+            entities.AddToVoluntarySubjectAssignements(new VoluntarySubjectAssignement() { Pupil = pupil, Subject = subject });
+            entities.SaveChanges();
+        }
+
+        public void AssignSPF(Pupil pupil, Subject subject) {
+            entities.AddToSPFs(new SPF() { Pupil = pupil, Subject = subject, Level = pupil.SchoolClass.Level });
+            entities.SaveChanges();
+        }
+
+        public void AssignSPF(Pupil pupil, Subject subject, int level)
+        {
+            entities.AddToSPFs(new SPF() { Pupil = pupil, Subject = subject, Level = level });
+            entities.SaveChanges();
+        }
+
+        public void AssignGrade(Pupil pupil, SubjectArea subjectArea, int grade) {
+            entities.AddToGrades(new Grade() { Pupil = pupil, SubjectArea = subjectArea, Value = grade });
+            entities.SaveChanges();
+        }
+
+        public void AssignSubject(Branch branch, Subject subject) {
+            entities.AddToBranchSubjectAssignments(new BranchSubjectAssignment() { Branch = branch, Subject = subject });
+            entities.SaveChanges();
+        }
+
+        public void AssignSubject(Teacher teacher, Subject subject) {
+            entities.AddToTeacherSubjectAssignments(new TeacherSubjectAssignment() { Teacher = teacher, Subject = subject });
+            entities.SaveChanges();
+        }
+
+        public void AssignSchoolClass(Teacher teacher, SchoolClass schoolClass) {
+            entities.AddToTeacherSchoolClassAssignments(new TeacherSchoolClassAssignment() { Teacher = teacher, SchoolClass = schoolClass });
+            entities.SaveChanges();
+        }
+
+
+
+
+        
     }
 }
