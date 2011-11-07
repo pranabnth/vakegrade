@@ -13,7 +13,18 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            if (Session["User"] != null)
+            {
+
+                return View();
+            }
+            ViewData["error"] = "Bitte melden sie sich am System an";
+            return Redirect("/Home/");
+        }
+
+        public bool IsAuthorized()
+        {
+            return Session["User"] != null && Session["Role"].ToString() == "ClassTeacher";
         }
 
     }

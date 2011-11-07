@@ -14,29 +14,18 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
         public ActionResult Index()
         {
-            
-            return View();
-        }
+            if (IsAuthorized()) {
 
-        [HttpPost]
-        public ActionResult RecieveStudentConfig() 
-        {
-            foreach (string inputTagName in Request.Files)
-            {
-                HttpPostedFileBase file = Request.Files[inputTagName];
-                if (file.ContentLength > 0)
-                {
-                    
-                    byte[] config = new byte[file.ContentLength];
-                    file.InputStream.Read(config, 0, file.ContentLength);
-
-                    
-                    String s = System.Text.UnicodeEncoding.UTF8.GetString(config);
-                }
+                return View();
             }
-
-            return RedirectToAction("Index");
-    
+            ViewData["error"] = "Bitte melden sie sich am System an";
+            return Redirect("/Home/");
         }
+
+        public bool IsAuthorized() {
+            return Session["User"] != null && Session["Role"].ToString() == "Admin";
+        }
+
+        
     }
 }
