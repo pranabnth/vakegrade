@@ -1,18 +1,31 @@
 ﻿body 
 {
     background-color:#408Ad2;
-    font:Arial;
+    font-family:"Arial", Sans-Serif;
+}
+
+.button
+{
+    background:#408Ad2;
+    border:2px solid grey;
+    padding: 3px;    
+}
+
+.file
+{
+    background:White;
+    border:2px solid grey;
+    padding: 3px;    
 }
 
 .page
 {
-    background-color:#A0F06C;
     margin-left:auto;
     margin-right:auto;
     width: 1024px;
     padding:10px;
-    
-    
+    background:White;
+    border-bottom:5px solid black;
 }
 
 #login
