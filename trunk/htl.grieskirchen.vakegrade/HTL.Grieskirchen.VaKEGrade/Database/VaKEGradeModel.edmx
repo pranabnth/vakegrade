@@ -34,6 +34,10 @@
             <End Role="SubjectArea" EntitySet="SubjectArea" />
             <End Role="Grade" EntitySet="Grade" />
           </AssociationSet>
+          <AssociationSet Name="FK_Pupil_SchoolClass" Association="VaKEGradeModel.Store.FK_Pupil_SchoolClass">
+            <End Role="SchoolClass" EntitySet="SchoolClass" />
+            <End Role="Pupil" EntitySet="Pupil" />
+          </AssociationSet>
           <AssociationSet Name="FK_SPF_Pupil" Association="VaKEGradeModel.Store.FK_SPF_Pupil">
             <End Role="Pupil" EntitySet="Pupil" />
             <End Role="SPF" EntitySet="SPF" />
@@ -109,6 +113,7 @@
           <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="10" />
           <Property Name="BranchID" Type="int" Nullable="false" />
+          <Property Name="Level" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="SPF">
           <Key>
@@ -215,6 +220,18 @@
             </Principal>
             <Dependent Role="Grade">
               <PropertyRef Name="SubjectAreaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pupil_SchoolClass">
+          <End Role="SchoolClass" Type="VaKEGradeModel.Store.SchoolClass" Multiplicity="1" />
+          <End Role="Pupil" Type="VaKEGradeModel.Store.Pupil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SchoolClass">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Pupil">
+              <PropertyRef Name="ClassID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -379,6 +396,10 @@
             <End Role="Teacher" EntitySet="Teachers" />
             <End Role="TeacherSubjectAssignment" EntitySet="TeacherSubjectAssignments" />
           </AssociationSet>
+          <AssociationSet Name="FK_Pupil_SchoolClass" Association="VaKEGradeModel.FK_Pupil_SchoolClass">
+            <End Role="SchoolClass" EntitySet="SchoolClasses" />
+            <End Role="Pupil" EntitySet="Pupils" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Branch">
           <Key>
@@ -422,6 +443,7 @@
           <NavigationProperty Name="Grades" Relationship="VaKEGradeModel.FK_Grade_Pupil" FromRole="Pupil" ToRole="Grade" />
           <NavigationProperty Name="SPFs" Relationship="VaKEGradeModel.FK_SPF_Pupil" FromRole="Pupil" ToRole="SPF" />
           <NavigationProperty Name="VoluntarySubjectAssignements" Relationship="VaKEGradeModel.FK_VoluntarySubjectAssignement_Pupil" FromRole="Pupil" ToRole="VoluntarySubjectAssignement" />
+          <NavigationProperty Name="SchoolClass" Relationship="VaKEGradeModel.FK_Pupil_SchoolClass" FromRole="Pupil" ToRole="SchoolClass" />
         </EntityType>
         <EntityType Name="SchoolClass">
           <Key>
@@ -431,6 +453,8 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
           <Property Name="BranchID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="TeacherSchoolClassAssignments" Relationship="VaKEGradeModel.FK_TeacherSchoolClassAssignment_SchoolClass" FromRole="SchoolClass" ToRole="TeacherSchoolClassAssignment" />
+          <NavigationProperty Name="Pupils" Relationship="VaKEGradeModel.FK_Pupil_SchoolClass" FromRole="SchoolClass" ToRole="Pupil" />
+          <Property Type="Int32" Name="Level" Nullable="false" />
         </EntityType>
         <EntityType Name="SPF">
           <Key>
@@ -651,6 +675,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Pupil_SchoolClass">
+          <End Type="VaKEGradeModel.SchoolClass" Role="SchoolClass" Multiplicity="1" />
+          <End Type="VaKEGradeModel.Pupil" Role="Pupil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SchoolClass">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Pupil">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -681,7 +717,8 @@
             <ScalarProperty Name="ClassID" ColumnName="ClassID" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="SchoolClasses"><EntityTypeMapping TypeName="VaKEGradeModel.SchoolClass"><MappingFragment StoreEntitySet="SchoolClass">
-            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
             <ScalarProperty Name="Name" ColumnName="Name" />
             <ScalarProperty Name="BranchID" ColumnName="BranchID" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
@@ -751,7 +788,7 @@
         <EntityTypeShape EntityType="VaKEGradeModel.Pupil" Width="1.5" PointX="3.125" PointY="3.625" Height="2.7494921874999996" IsExpanded="true" />
         <EntityTypeShape EntityType="VaKEGradeModel.SchoolClass" Width="1.5" PointX="0.75" PointY="16" Height="1.7879850260416657" IsExpanded="true" />
         <EntityTypeShape EntityType="VaKEGradeModel.SPF" Width="1.5" PointX="3.125" PointY="0.75" Height="2.1725878906249996" IsExpanded="true" />
-        <EntityTypeShape EntityType="VaKEGradeModel.Subject" Width="1.5" PointX="0.75" PointY="6.625" Height="2.3648893229166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="VaKEGradeModel.Subject" Width="1.5" PointX="0.75" PointY="7.125" Height="2.3648893229166674" IsExpanded="true" />
         <EntityTypeShape EntityType="VaKEGradeModel.SubjectArea" Width="1.5" PointX="0.75" PointY="19.375" Height="1.7879850260416674" IsExpanded="true" />
         <EntityTypeShape EntityType="VaKEGradeModel.Teacher" Width="1.5" PointX="0.75" PointY="12.625" Height="2.3648893229166674" IsExpanded="true" />
         <EntityTypeShape EntityType="VaKEGradeModel.TeacherSchoolClassAssignment" Width="1.5" PointX="3" PointY="12.75" Height="2.1725878906249996" IsExpanded="true" />
@@ -764,15 +801,17 @@
           <ConnectorPoint PointX="3" PointY="7.8651432291666676" />
         </AssociationConnector>
         <AssociationConnector Association="VaKEGradeModel.FK_BranchSubjectAssignment_Subject" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="7.3075716145833338" />
-          <ConnectorPoint PointX="3" PointY="7.3075716145833338" />
+          <ConnectorPoint PointX="2.25" PointY="8.42271484375" />
+          <ConnectorPoint PointX="2.5416666666666665" PointY="8.42271484375" />
+          <ConnectorPoint PointX="2.7083333333333335" PointY="8.42271484375" />
+          <ConnectorPoint PointX="3" PointY="8.42271484375" />
         </AssociationConnector>
         <AssociationConnector Association="VaKEGradeModel.FK_Grade_Pupil" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.625" PointY="4.464892519531249" />
-          <ConnectorPoint PointX="5.697916666666667" PointY="4.4648925195312481" />
-          <ConnectorPoint PointX="5.864583333333333" PointY="4.464892519531249" />
-          <ConnectorPoint PointX="6.375" PointY="4.464892519531249" />
-          <ConnectorPoint PointX="6.375" PointY="3.172587890625" />
+          <ConnectorPoint PointX="4.625" PointY="4.49614501953125" />
+          <ConnectorPoint PointX="5.697916666666667" PointY="4.4961450195312489" />
+          <ConnectorPoint PointX="5.864583333333333" PointY="4.49614501953125" />
+          <ConnectorPoint PointX="6.4843775" PointY="4.49614501953125" />
+          <ConnectorPoint PointX="6.4843775" PointY="3.172587890625" />
         </AssociationConnector>
         <AssociationConnector Association="VaKEGradeModel.FK_Grade_SubjectArea" ManuallyRouted="false">
           <ConnectorPoint PointX="2.25" PointY="20.268992513020834" />
@@ -784,40 +823,38 @@
           <ConnectorPoint PointX="3.875" PointY="2.9225878906249996" />
         </AssociationConnector>
         <AssociationConnector Association="VaKEGradeModel.FK_VoluntarySubjectAssignement_Pupil" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.625" PointY="5.3672900390625" />
-          <ConnectorPoint PointX="5.697916666666667" PointY="5.3672900390624987" />
-          <ConnectorPoint PointX="5.864583333333333" PointY="5.3672900390625" />
-          <ConnectorPoint PointX="7.15625" PointY="5.3672900390625" />
-          <ConnectorPoint PointX="7.15625" PointY="6.875" />
+          <ConnectorPoint PointX="4.625" PointY="5.5627218196614594" />
+          <ConnectorPoint PointX="5.697916666666667" PointY="5.5627218196614585" />
+          <ConnectorPoint PointX="5.864583333333333" PointY="5.5627218196614594" />
+          <ConnectorPoint PointX="6.99218875" PointY="5.5627218196614594" />
+          <ConnectorPoint PointX="6.99218875" PointY="6.875" />
         </AssociationConnector>
         <AssociationConnector Association="VaKEGradeModel.FK_TeacherSchoolClassAssignment_SchoolClass" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="16.893992513020834" />
-          <ConnectorPoint PointX="3.75" PointY="16.893992513020834" />
+          <ConnectorPoint PointX="2.25" PointY="16.990143229166669" />
+          <ConnectorPoint PointX="3.75" PointY="16.990143229166669" />
           <ConnectorPoint PointX="3.75" PointY="14.922587890625" />
         </AssociationConnector>
         <AssociationConnector Association="VaKEGradeModel.FK_SPF_Subject" ManuallyRouted="false">
-          <ConnectorPoint PointX="1.5" PointY="6.625" />
+          <ConnectorPoint PointX="1.5" PointY="7.125" />
           <ConnectorPoint PointX="1.5" PointY="1.8362939453124998" />
           <ConnectorPoint PointX="3.125" PointY="1.8362939453124998" />
         </AssociationConnector>
         <AssociationConnector Association="VaKEGradeModel.FK_TeacherSubjectAssignment_Subject" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.2257692307692305" PointY="8.9898893229166674" />
-          <ConnectorPoint PointX="2.5635876957004622" PointY="9.2997462442078476" />
-          <ConnectorPoint PointX="2.6864123042995383" PointY="9.4124045474982019" />
-          <ConnectorPoint PointX="2.7291666666666665" PointY="9.4516200921474365" />
-          <ConnectorPoint PointX="2.7291666666666665" PointY="10.865143229166668" />
-          <ConnectorPoint PointX="3" PointY="10.865143229166668" />
+          <ConnectorPoint PointX="2.25" PointY="9.4275806306089756" />
+          <ConnectorPoint PointX="2.8125" PointY="9.9900806306089756" />
+          <ConnectorPoint PointX="2.8125" PointY="9.6863471538461532" />
+          <ConnectorPoint PointX="3.0011528461538459" PointY="9.875" />
         </AssociationConnector>
         <AssociationConnector Association="VaKEGradeModel.FK_VoluntarySubjectAssignement_Subject" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="8.958734476762821" />
-          <ConnectorPoint PointX="2.5660744349011213" PointY="9.2748089116639409" />
-          <ConnectorPoint PointX="2.6839255650988791" PointY="9.3926600418617" />
-          <ConnectorPoint PointX="2.90625" PointY="9.614984476762821" />
-          <ConnectorPoint PointX="2.90625" PointY="9.2302864583333317" />
-          <ConnectorPoint PointX="5.6261528461538468" PointY="9.2302864583333317" />
-          <ConnectorPoint PointX="5.7223244349011209" PointY="9.1341148695860568" />
-          <ConnectorPoint PointX="5.8401755650988791" PointY="9.0162637393883" />
-          <ConnectorPoint PointX="6.0011528461538459" PointY="8.8552864583333317" />
+          <ConnectorPoint PointX="2.25" PointY="9.1101815444711534" />
+          <ConnectorPoint PointX="2.5416666666666665" PointY="9.1101815444711534" />
+          <ConnectorPoint PointX="2.7083333333333335" PointY="9.1101815444711534" />
+          <ConnectorPoint PointX="4.510416666666667" PointY="9.1101815444711534" />
+          <ConnectorPoint PointX="4.677083333333333" PointY="9.1101815444711534" />
+          <ConnectorPoint PointX="5.697916666666667" PointY="9.1101815444711534" />
+          <ConnectorPoint PointX="5.864583333333333" PointY="9.1101815444711534" />
+          <ConnectorPoint PointX="6.75" PointY="9.1101815444711534" />
+          <ConnectorPoint PointX="6.75" PointY="8.8552864583333317" />
         </AssociationConnector>
         <AssociationConnector Association="VaKEGradeModel.FK_TeacherSchoolClassAssignment_Teacher" ManuallyRouted="false">
           <ConnectorPoint PointX="2.25" PointY="13.8362939453125" />
@@ -828,6 +865,13 @@
           <ConnectorPoint PointX="2.625" PointY="12.251152846153847" />
           <ConnectorPoint PointX="2.625" PointY="11.391466843750003" />
           <ConnectorPoint PointX="3" PointY="11.391466843750003" />
+        </AssociationConnector>
+        <AssociationConnector Association="VaKEGradeModel.FK_Pupil_SchoolClass" >
+          <ConnectorPoint PointX="2.25" PointY="16.463819114583334" />
+          <ConnectorPoint PointX="3.6666666666666665" PointY="16.463819114583334" />
+          <ConnectorPoint PointX="3.8333333333333335" PointY="16.463819114583334" />
+          <ConnectorPoint PointX="4.59375" PointY="16.463819114583334" />
+          <ConnectorPoint PointX="4.59375" PointY="6.5667936197916665" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

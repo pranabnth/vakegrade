@@ -23,10 +23,16 @@ namespace VaKEGrade.Controllers
             return View();
         }
 
+        public ActionResult Login() {
+            return Redirect("/Admin/");
+        }
+
         public static string PrimaryDomain
         {
             get { return "localhost:4895"; }
         }
+
+
 
         static void CheckToSecurePage(System.Web.HttpContext Context)
         {

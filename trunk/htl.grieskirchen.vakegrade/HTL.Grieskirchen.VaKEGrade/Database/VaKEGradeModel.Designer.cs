@@ -30,6 +30,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("VaKEGradeModel", "FK_VoluntarySubjectAssignement_Subject", "Subject", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(HTL.Grieskirchen.VaKEGrade.Database.Subject), "VoluntarySubjectAssignement", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HTL.Grieskirchen.VaKEGrade.Database.VoluntarySubjectAssignement), true)]
 [assembly: EdmRelationshipAttribute("VaKEGradeModel", "FK_TeacherSchoolClassAssignment_Teacher", "Teacher", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(HTL.Grieskirchen.VaKEGrade.Database.Teacher), "TeacherSchoolClassAssignment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HTL.Grieskirchen.VaKEGrade.Database.TeacherSchoolClassAssignment), true)]
 [assembly: EdmRelationshipAttribute("VaKEGradeModel", "FK_TeacherSubjectAssignment_Teacher", "Teacher", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(HTL.Grieskirchen.VaKEGrade.Database.Teacher), "TeacherSubjectAssignment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HTL.Grieskirchen.VaKEGrade.Database.TeacherSubjectAssignment), true)]
+[assembly: EdmRelationshipAttribute("VaKEGradeModel", "FK_Pupil_SchoolClass", "SchoolClass", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(HTL.Grieskirchen.VaKEGrade.Database.SchoolClass), "Pupil", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HTL.Grieskirchen.VaKEGrade.Database.Pupil), true)]
 
 #endregion
 
@@ -1134,6 +1135,44 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("VaKEGradeModel", "FK_Pupil_SchoolClass", "SchoolClass")]
+        public SchoolClass SchoolClass
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<SchoolClass>("VaKEGradeModel.FK_Pupil_SchoolClass", "SchoolClass").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<SchoolClass>("VaKEGradeModel.FK_Pupil_SchoolClass", "SchoolClass").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<SchoolClass> SchoolClassReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<SchoolClass>("VaKEGradeModel.FK_Pupil_SchoolClass", "SchoolClass");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<SchoolClass>("VaKEGradeModel.FK_Pupil_SchoolClass", "SchoolClass", value);
+                }
+            }
+        }
 
         #endregion
     }
@@ -1154,12 +1193,14 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         /// <param name="id">Initial value of the ID property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="branchID">Initial value of the BranchID property.</param>
-        public static SchoolClass CreateSchoolClass(global::System.Int32 id, global::System.String name, global::System.Int32 branchID)
+        /// <param name="level">Initial value of the Level property.</param>
+        public static SchoolClass CreateSchoolClass(global::System.Int32 id, global::System.String name, global::System.Int32 branchID, global::System.Int32 level)
         {
             SchoolClass schoolClass = new SchoolClass();
             schoolClass.ID = id;
             schoolClass.Name = name;
             schoolClass.BranchID = branchID;
+            schoolClass.Level = level;
             return schoolClass;
         }
 
@@ -1240,6 +1281,30 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         private global::System.Int32 _BranchID;
         partial void OnBranchIDChanging(global::System.Int32 value);
         partial void OnBranchIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Level
+        {
+            get
+            {
+                return _Level;
+            }
+            set
+            {
+                OnLevelChanging(value);
+                ReportPropertyChanging("Level");
+                _Level = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Level");
+                OnLevelChanged();
+            }
+        }
+        private global::System.Int32 _Level;
+        partial void OnLevelChanging(global::System.Int32 value);
+        partial void OnLevelChanged();
 
         #endregion
     
@@ -1263,6 +1328,28 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<TeacherSchoolClassAssignment>("VaKEGradeModel.FK_TeacherSchoolClassAssignment_SchoolClass", "TeacherSchoolClassAssignment", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("VaKEGradeModel", "FK_Pupil_SchoolClass", "Pupil")]
+        public EntityCollection<Pupil> Pupils
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Pupil>("VaKEGradeModel.FK_Pupil_SchoolClass", "Pupil");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Pupil>("VaKEGradeModel.FK_Pupil_SchoolClass", "Pupil", value);
                 }
             }
         }
