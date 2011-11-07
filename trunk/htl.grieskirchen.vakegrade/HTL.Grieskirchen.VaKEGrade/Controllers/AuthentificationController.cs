@@ -29,18 +29,26 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
             {
                 Session["User"] = teacher;
                 if (username.ToLower() == "admin") {
+                    Session["Role"] = "Admin";
                     url = "/Admin/"; 
                 }
                 else if (repository.IsUserClassTeacher(teacher))
                 {
+                    Session["Role"] = "ClassTeacher";
                     url = "/ClassTeacher/";
                 }
                 else {
+                    Session["Role"] = "Teacher";
                     url = "/Teacher/";
                 }               
             }
             
             return Redirect(url);
+        }
+
+        public ActionResult Logout() {
+            Session["User"] = null;
+            return Redirect("/Home/");
         }
 
     }
