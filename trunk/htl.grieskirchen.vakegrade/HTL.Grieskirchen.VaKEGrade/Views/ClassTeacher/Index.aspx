@@ -6,6 +6,19 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h2>Index</h2>
-
+    <h2>Klassenvorstand</h2>
+    <table>
+        <tr>
+            <td>
+               <select>
+                    <option></option>
+               </select>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+    </table>
 </asp:Content>
