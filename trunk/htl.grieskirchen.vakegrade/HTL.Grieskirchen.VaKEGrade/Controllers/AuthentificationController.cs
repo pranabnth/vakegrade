@@ -21,7 +21,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
         public ActionResult Login(FormCollection fc) {
             string username = fc.Get("tbUsername");
             string password = fc.Get("tbPassword");
-            string url = "";
+            string url = "/Home/";
 
             VaKEGradeRepository repository = new VaKEGradeRepository();
             Teacher teacher = repository.GetTeacher(username, password);
