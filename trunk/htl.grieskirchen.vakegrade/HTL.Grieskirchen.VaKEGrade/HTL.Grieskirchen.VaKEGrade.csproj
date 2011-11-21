@@ -88,6 +88,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Arrow.png" />
+    <Content Include="Content\jquery-ui-1.8.16.custom.css" />
     <Content Include="Content\Style.css" />
     <Content Include="Content\ui.jqgrid.css" />
     <Content Include="Global.asax" />
