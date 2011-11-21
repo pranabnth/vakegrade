@@ -145,42 +145,14 @@
     
 
     <div id="accordion">
-    <h3><a href="#">Neuen Schülerdaten importieren</a></h3>
+    <h3><a href="#">Schülerdaten bearbeiten</a></h3>
+    <div><table id="subjects" class="list"></table></div>
 
-
-    <h3><a href="#">Schülerdaten anzeigen</a></h3>
-
+    <h3><a href="#">Schüler benoten</a></h3>
     <div><table id="students" class="list"></table></div>
 
-    <h3><a href="#">Fächer verwalten</a></h3>
-    <div><table id="subjects" class="list"></table></div>
-    
-    <h3><a href="#">Zweige verwalten</a></h3>
-
-    <table class="list"><tr><td>
-    <div><table id="branches" ></table></div>
-    </td><td>
-    <img src="../../Content/Arrow.png" alt="doppelpfeil"/>
-    </td>
-    <td>
-    <div><table id="subject_list" ></table></div>
-    </td>
-    </tr>
-    </table>
-
-    <h3><a href="#">Klassen verwalten</a></h3>
-    <table class="list"><tr><td>
-    
-    <div><table id="classes" ></table></div>
-    </td><td>
-    <img src="../../Content/Arrow.png" alt="doppelpfeil"/>
-    </td>
-    <td>
-    <div><table id="branch_list" ></table></div>
-    </td>
-    </tr>
-    </table>
-    
+    <h3><a href="#">Zeugnisse drucken</a></h3>
+        
     </div>
    
     

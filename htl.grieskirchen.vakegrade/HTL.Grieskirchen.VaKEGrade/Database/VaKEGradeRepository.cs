@@ -166,6 +166,11 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
 
         #region SchoolClass
 
+        public void AddClass(SchoolClass schoolClass){
+            entities.AddToSchoolClasses(schoolClass);
+            entities.SaveChanges();
+        }
+
         public SchoolClass GetClass(int id) {
             return (from schoolclass in entities.SchoolClasses
                     where schoolclass.ID == id
