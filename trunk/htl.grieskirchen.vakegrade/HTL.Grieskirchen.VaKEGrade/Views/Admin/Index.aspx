@@ -10,15 +10,13 @@
     
 
         <script type="text/javascript">
-//            $(function () {
-//                $("#accordion").accordion();
-//            });
-           
+
+
             $(document).ready(function () {
 
 
-               
-
+                $("#accordion").accordion();
+                
 
 
                 jQuery("#students").jqGrid({
@@ -148,6 +146,7 @@
 
     <div id="accordion">
     <h3><a href="#">Neuen Schülerdaten importieren</a></h3>
+
     <div><% using (Html.BeginForm("RecieveStudentConfig", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {%><br />
     <input class="file" type="file" name="files" id="file1" size="25" />
@@ -156,11 +155,14 @@
 <% } %>   </div>
 
     <h3><a href="#">Schülerdaten anzeigen</a></h3>
+
     <div><table id="students" class="list"></table></div>
+
     <h3><a href="#">Fächer verwalten</a></h3>
     <div><table id="subjects" class="list"></table></div>
     
     <h3><a href="#">Zweige verwalten</a></h3>
+
     <table class="list"><tr><td>
     <div><table id="branches" ></table></div>
     </td><td>
@@ -171,6 +173,7 @@
     </td>
     </tr>
     </table>
+
     <h3><a href="#">Klassen verwalten</a></h3>
     <table class="list"><tr><td>
     
@@ -186,6 +189,7 @@
     
     </div>
    
+    
 
     
 
