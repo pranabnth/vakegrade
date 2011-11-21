@@ -105,6 +105,7 @@
           <Property Name="Religion" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Gender" Type="nvarchar" Nullable="false" MaxLength="1" />
           <Property Name="ClassID" Type="int" Nullable="false" />
+          <Property Name="Birthdate" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="SchoolClass">
           <Key>
@@ -112,7 +113,7 @@
           </Key>
           <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="10" />
-          <Property Name="BranchID" Type="int" Nullable="false" />
+          <Property Name="BranchID" Type="int" />
           <Property Name="Level" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="SPF">
@@ -444,6 +445,7 @@
           <NavigationProperty Name="SPFs" Relationship="VaKEGradeModel.FK_SPF_Pupil" FromRole="Pupil" ToRole="SPF" />
           <NavigationProperty Name="VoluntarySubjectAssignements" Relationship="VaKEGradeModel.FK_VoluntarySubjectAssignement_Pupil" FromRole="Pupil" ToRole="VoluntarySubjectAssignement" />
           <NavigationProperty Name="SchoolClass" Relationship="VaKEGradeModel.FK_Pupil_SchoolClass" FromRole="Pupil" ToRole="SchoolClass" />
+          <Property Type="DateTime" Name="Birthdate" Nullable="false" />
         </EntityType>
         <EntityType Name="SchoolClass">
           <Key>
@@ -709,7 +711,8 @@
             <ScalarProperty Name="SubjectAreaID" ColumnName="SubjectAreaID" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Pupils"><EntityTypeMapping TypeName="VaKEGradeModel.Pupil"><MappingFragment StoreEntitySet="Pupil">
-            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="Birthdate" ColumnName="Birthdate" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
             <ScalarProperty Name="FirstName" ColumnName="FirstName" />
             <ScalarProperty Name="LastName" ColumnName="LastName" />
             <ScalarProperty Name="Religion" ColumnName="Religion" />

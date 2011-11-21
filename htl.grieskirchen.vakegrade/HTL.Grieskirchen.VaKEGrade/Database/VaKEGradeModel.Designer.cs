@@ -904,7 +904,8 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         /// <param name="religion">Initial value of the Religion property.</param>
         /// <param name="gender">Initial value of the Gender property.</param>
         /// <param name="classID">Initial value of the ClassID property.</param>
-        public static Pupil CreatePupil(global::System.Int32 id, global::System.String firstName, global::System.String lastName, global::System.String religion, global::System.String gender, global::System.Int32 classID)
+        /// <param name="birthdate">Initial value of the Birthdate property.</param>
+        public static Pupil CreatePupil(global::System.Int32 id, global::System.String firstName, global::System.String lastName, global::System.String religion, global::System.String gender, global::System.Int32 classID, global::System.DateTime birthdate)
         {
             Pupil pupil = new Pupil();
             pupil.ID = id;
@@ -913,6 +914,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
             pupil.Religion = religion;
             pupil.Gender = gender;
             pupil.ClassID = classID;
+            pupil.Birthdate = birthdate;
             return pupil;
         }
 
@@ -1065,6 +1067,30 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         private global::System.Int32 _ClassID;
         partial void OnClassIDChanging(global::System.Int32 value);
         partial void OnClassIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime Birthdate
+        {
+            get
+            {
+                return _Birthdate;
+            }
+            set
+            {
+                OnBirthdateChanging(value);
+                ReportPropertyChanging("Birthdate");
+                _Birthdate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Birthdate");
+                OnBirthdateChanged();
+            }
+        }
+        private global::System.DateTime _Birthdate;
+        partial void OnBirthdateChanging(global::System.DateTime value);
+        partial void OnBirthdateChanged();
 
         #endregion
     
