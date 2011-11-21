@@ -38,8 +38,15 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
                         file.InputStream.Read(config, 0, file.ContentLength);
 
 
-                        String s = System.Text.UnicodeEncoding.UTF8.GetString(config);
+                        string s = System.Text.UnicodeEncoding.UTF8.GetString(config);
                         string[] data = s.Split(Environment.NewLine.ToCharArray());
+
+                        foreach (string temp in data) {
+                            if (temp != "") {
+                                string[] pupil = temp.Split(';');
+                                //VaKEGrade.Database.VaKEGradeRepository.Instance.AddPupil(new Database.Pupil(){ });
+                            }
+                        }
                     }
                 }
                 return RedirectToAction("Index");
