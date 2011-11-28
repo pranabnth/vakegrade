@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace HTL.Grieskirchen.VaKEGrade.Utility
 {
-    public class GridData : Controller
+    public class GridData 
     {
         public int total { get; set; }
         public int page { get; set; }

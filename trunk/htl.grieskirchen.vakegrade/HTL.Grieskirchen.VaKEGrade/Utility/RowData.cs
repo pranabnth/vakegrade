@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace HTL.Grieskirchen.VaKEGrade.Utility
 {
-    public class RowData : Controller
+    public class RowData
     {
         public int id { get; set; }
         public string[] cell;
