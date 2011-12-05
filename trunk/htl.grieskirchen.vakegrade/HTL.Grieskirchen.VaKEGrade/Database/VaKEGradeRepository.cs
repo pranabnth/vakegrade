@@ -215,9 +215,9 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
             return entities.Subjects;
         }
 
-        public IQueryable<Subject> GetSubjectsOfTeacher(Teacher teacher, SchoolClass schoolClass) {
-            teacher = GetTeacher(2);
-             
+        public IQueryable<Subject> GetSubjectsOfTeacher(int teacherID, int schoolClassID) {
+            Teacher teacher = GetTeacher(teacherID);
+            SchoolClass schoolClass = GetClass(schoolClassID);
             return from tsa in entities.TeacherSubjectAssignments
                    from bsa in entities.BranchSubjectAssignments
                    where tsa.TeacherID == teacher.ID
@@ -331,11 +331,12 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         }
 
         public void AssignSchoolClass(Teacher teacher, SchoolClass schoolClass) {
-            if (teacher.PrimaryClasses.Count == 0)
-            {
+            if (teacher.PrimaryClasses.Count > 0)
+                throw new AlreadyAssignedException(teacher.PrimaryClasses.First(), teacher);
+
                 teacher.PrimaryClasses.Add(schoolClass);
                 entities.SaveChanges();
-            }
+            
         }
 
 

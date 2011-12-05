@@ -17,7 +17,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Database.Exceptions
         public ClassNotEmptyException(SchoolClass schoolClass)
             : base("The teacher's class \""+schoolClass.Name + schoolClass.Level +"\" is still existing and contains pupils")
         {
-    
+            this.schoolClass = schoolClass;
         }
     }
 }
