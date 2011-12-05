@@ -40,7 +40,8 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
                 else {
                     Session["Role"] = "Teacher";
                     url = "/Teacher/";
-                }               
+                }
+               // VaKEGradeRepository.Instance.GetSubjectsOfTeacher(null, null);
             }
             
             return Redirect(url);
