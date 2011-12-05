@@ -67,7 +67,7 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="Trirand.Web.Mvc">
-      <HintPath>..\..\..\Users\Philipp\Downloads\jqSuiteASPNET_MVC_4_2_0_0\bin\Trirand.Web.Mvc.dll</HintPath>
+      <HintPath>Utility\Trirand.Web.Mvc.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

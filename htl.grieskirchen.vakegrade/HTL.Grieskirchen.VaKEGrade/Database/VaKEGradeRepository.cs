@@ -215,14 +215,10 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
             return entities.Subjects;
         }
 
-        public IQueryable<Subject> GetSubjectsOfTeacher(int teacherID, int schoolClassID) {
+        public IEnumerable<Subject> GetSubjectsOfTeacher(int teacherID, int schoolClassID) {
             Teacher teacher = GetTeacher(teacherID);
-            SchoolClass schoolClass = GetClass(schoolClassID);
-            return from tsa in entities.TeacherSubjectAssignments
-                   from bsa in entities.BranchSubjectAssignments
-                   where tsa.TeacherID == teacher.ID
-                   && tsa.SubjectID == bsa.SubjectID
-                   && bsa.BranchID == schoolClass.BranchID
+            return from tsa in teacher.TeacherSubjectAssignments
+                   where tsa.ClassID == schoolClassID
                    select tsa.Subject;
         }
 

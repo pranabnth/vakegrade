@@ -33,6 +33,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
         public JQGrid GeneratePupilGrid() {
             JQGrid pupilGrid = new VaKEGrade.Models.GridModel().PupilGrid;
             pupilGrid.DataUrl = Url.Action("RetrieveAllStudents");
+            pupilGrid.EditUrl = Url.Action("EditStudent");
             Session["PupilGModel"] = pupilGrid;
             return pupilGrid;
         }
@@ -46,25 +47,38 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
             if (IsAuthorized()) {
 
                 Database.SchoolClass schoolClass = ((Database.Teacher)Session["User"]).PrimaryClasses.First();
-                //Utility.GridData gData = new Utility.GridData();
-                
-                //List<Utility.RowData> rows = new List<Utility.RowData>();
-
                 return GeneratePupilGrid().DataBind(schoolClass.Pupils.AsQueryable());
-                //foreach (Database.Pupil pupil in schoolClass.Pupils.OrderBy(x => x.LastName))
-                //{
-                //    rows.Add(new Utility.RowData() { id = pupil.ID, cell = new string[] { pupil.LastName, pupil.FirstName, pupil.Religion, pupil.Birthdate.ToString(), pupil.Gender } });
-                //}
-
-                //gData.records = rows.Count();
-                //gData.total = rows.Count();
-                //gData.rows = rows.ToArray();
-                 
-                //JsonResult jres = Json(gData, JsonRequestBehavior.AllowGet);
                 
-                //return jres;
             }
             return null;
+        }
+
+        public void EditStudent(Database.Pupil editedPupil)
+        {
+            // Get the grid and database (northwind) models
+            var pupilModel = GeneratePupilGrid();
+
+            // If we are in "Edit" mode, get the Order from database that matches the edited order
+            // Check for "Edit" mode this way, we can also be in "Delete" or "Add" mode as well in this method
+            if (pupilModel.AjaxCallBackMode == AjaxCallBackMode.EditRow)
+            {
+                // Get the data from and find the Order corresponding to the edited row
+                Database.Pupil pupilToUpdate = Database.VaKEGradeRepository.Instance.GetPupil(editedPupil.ID);
+
+                pupilToUpdate.FirstName = editedPupil.FirstName;
+                pupilToUpdate.LastName = editedPupil.LastName;
+                pupilToUpdate.Birthdate = editedPupil.Birthdate;
+                pupilToUpdate.Religion = editedPupil.Religion;
+                pupilToUpdate.Gender = editedPupil.Gender;
+
+                Database.VaKEGradeRepository.Instance.Update();
+                // Update the Order information to match the edited Order data
+                // In this demo we do not need to update the database since we are using Session
+                // In your case you may need to actually hit the database
+                
+                // This will save the changes into the database. We have commented this since this is just an online demo
+                // northWindModel.SubmitChanges();
+            }
         }
 
         //// This is the default action for the View. Use it to setup your jqGrid Model.
