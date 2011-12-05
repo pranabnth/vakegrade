@@ -63,9 +63,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         }
 
         public bool IsUserClassTeacher(Teacher teacher) {
-            return (from sca in teacher.TeacherSchoolClassAssignments
-                    where sca.IsClassTeacher == true
-                    select sca).Count() > 0;
+            return teacher.PrimaryClasses.Count > 0 || teacher.SecondaryClasses.Count > 0;
         }
 
         /// <summary>
@@ -127,7 +125,10 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
             Teacher teacher = GetTeacher(id);
             if (teacher == null)
                 throw new EntryNotFoundException("User with ID \"" + id + "\" does not exist");
-            teacher.TeacherSchoolClassAssignments.Clear();
+            if (teacher.PrimaryClasses.Count > 0){
+                
+                throw new ClassNotEmptyException(teacher.PrimaryClasses.First());
+            }
             teacher.TeacherSubjectAssignments.Clear();
 
             entities.DeleteObject(teacher);
@@ -177,6 +178,15 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
                     select schoolclass).FirstOrDefault();
         }
 
+        //public SchoolClass GetClassOfClassTeacher(Teacher teacher) {
+          
+        //}
+
+        public IEnumerable<SchoolClass> GetClassesOfTeacher(Teacher teacher) {
+            return (from tsa in teacher.TeacherSubjectAssignments
+                    select tsa.SchoolClass).Distinct();
+        }
+
         public IQueryable<SchoolClass> GetClasses() {
             return entities.SchoolClasses;
         }
@@ -187,7 +197,6 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
             if (schoolClass == null)
                 throw new EntryNotFoundException("Class with ID \"" + id + "\" does not exist");
             schoolClass.Pupils.Clear();
-            schoolClass.TeacherSchoolClassAssignments.Clear();
             entities.DeleteObject(schoolClass);
             entities.SaveChanges();
         }
@@ -204,6 +213,17 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
 
         public IQueryable<Subject> GetSubjects() {
             return entities.Subjects;
+        }
+
+        public IQueryable<Subject> GetSubjectsOfTeacher(Teacher teacher, SchoolClass schoolClass) {
+            teacher = GetTeacher(2);
+             
+            return from tsa in entities.TeacherSubjectAssignments
+                   from bsa in entities.BranchSubjectAssignments
+                   where tsa.TeacherID == teacher.ID
+                   && tsa.SubjectID == bsa.SubjectID
+                   && bsa.BranchID == schoolClass.BranchID
+                   select tsa.Subject;
         }
 
         public void AddSubject(Subject subject) {
@@ -278,7 +298,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         
         #endregion
 
-
+        
         public void AssignVoluntarySubject(Pupil pupil, Subject subject) {
             entities.AddToVoluntarySubjectAssignements(new VoluntarySubjectAssignement() { Pupil = pupil, Subject = subject });
             entities.SaveChanges();
@@ -311,8 +331,11 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         }
 
         public void AssignSchoolClass(Teacher teacher, SchoolClass schoolClass) {
-            entities.AddToTeacherSchoolClassAssignments(new TeacherSchoolClassAssignment() { Teacher = teacher, SchoolClass = schoolClass });
-            entities.SaveChanges();
+            if (teacher.PrimaryClasses.Count == 0)
+            {
+                teacher.PrimaryClasses.Add(schoolClass);
+                entities.SaveChanges();
+            }
         }
 
 
