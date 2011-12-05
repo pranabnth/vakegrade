@@ -16,12 +16,8 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
         {
             if (IsAuthorized())
             {
-                
-                List<Database.SchoolClass> classes = new List<Database.SchoolClass>();
-                foreach (Database.TeacherSchoolClassAssignment teacher_class in ((Database.Teacher)Session["User"]).TeacherSchoolClassAssignments) {
 
-                    classes.Add(teacher_class.SchoolClass);
-                }
+                List<Database.SchoolClass> classes = Database.VaKEGradeRepository.Instance.GetClassesOfTeacher((Database.Teacher)Session["User"]).ToList();
                 return View(classes);
             }
             ViewData["error"] = "Bitte melden sie sich am System an";
@@ -36,28 +32,30 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
         public JsonResult RetrieveClasses()
         {
-            if (IsAuthorized())
-            {
-                //List<Database.SchoolClass> classes = VaKEGrade.Database.VaKEGradeRepository.Instance.GetClasses().ToList<Database.SchoolClass>();
-                GridData gData = new GridData() { page = 1 };
-                List<RowData> rows = new List<RowData>();
-                Database.SchoolClass schoolClassTemp;
-                
-                foreach(Database.TeacherSchoolClassAssignment teacher_class in ((Database.Teacher)Session["User"]).TeacherSchoolClassAssignments){
-                    schoolClassTemp = teacher_class.SchoolClass;
-                    rows.Add(new RowData() { id = schoolClassTemp.ID, cell = new string[] { schoolClassTemp.Level.ToString(), schoolClassTemp.Name } });
-                }
-
-                gData.records = rows.Count();
-                gData.total = rows.Count();
-                gData.rows = rows.ToArray();
-
-                JsonResult jres = Json(gData, JsonRequestBehavior.AllowGet);
-
-                return jres;
-            }
-            ViewData["error"] = "Bitte melden sie sich am System an";
             return null;
+            //if (IsAuthorized())
+            //{
+            //    //List<Database.SchoolClass> classes = VaKEGrade.Database.VaKEGradeRepository.Instance.GetClasses().ToList<Database.SchoolClass>();
+            //    GridData gData = new GridData() { page = 1 };
+            //    List<RowData> rows = new List<RowData>();
+            //    Database.SchoolClass schoolClassTemp;
+
+            //    foreach (Database.TeacherSchoolClassAssignment teacher_class in ((Database.Teacher)Session["User"]).TeacherSchoolClassAssignments)
+            //    {
+            //        schoolClassTemp = teacher_class.SchoolClass;
+            //        rows.Add(new RowData() { id = schoolClassTemp.ID, cell = new string[] { schoolClassTemp.Level.ToString(), schoolClassTemp.Name } });
+            //    }
+
+            //    gData.records = rows.Count();
+            //    gData.total = rows.Count();
+            //    gData.rows = rows.ToArray();
+
+            //    JsonResult jres = Json(gData, JsonRequestBehavior.AllowGet);
+
+            //    return jres;
+            //}
+            //ViewData["error"] = "Bitte melden sie sich am System an";
+            //return null;
         }
 
         public JsonResult RetrieveGradeData()
@@ -112,27 +110,28 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
         public JsonResult RetrieveSubjectsOfClass(int classID)
         {
-            if (IsAuthorized())
-            {
-                List<Database.Subject> subjects = ((Database.Subject)Session['user']).TeacherSubjectAssignments;
-                GridData gData = new GridData() { page = 1 };
-                List<RowData> rows = new List<RowData>();
-
-                foreach (Database.Pupil pupil in pupils)
-                {
-                    rows.Add(new RowData() { id = pupil.ID, cell = new string[] { pupil.LastName, pupil.FirstName, pupil.Birthdate.ToString(), pupil.Gender } });
-                }
-
-                gData.records = rows.Count();
-                gData.total = rows.Count();
-                gData.rows = rows.ToArray();
-
-                JsonResult jres = Json(gData, JsonRequestBehavior.AllowGet);
-
-                return jres;
-            }
-            ViewData["error"] = "Bitte melden sie sich am System an";
             return null;
+            //if (IsAuthorized())
+            //{
+            //    List<Database.Subject> subjects = ((Database.Subject)Session["User"]).TeacherSubjectAssignments;
+            //    GridData gData = new GridData() { page = 1 };
+            //    List<RowData> rows = new List<RowData>();
+
+            //    foreach (Database.Pupil pupil in pupils)
+            //    {
+            //        rows.Add(new RowData() { id = pupil.ID, cell = new string[] { pupil.LastName, pupil.FirstName, pupil.Birthdate.ToString(), pupil.Gender } });
+            //    }
+
+            //    gData.records = rows.Count();
+            //    gData.total = rows.Count();
+            //    gData.rows = rows.ToArray();
+
+            //    JsonResult jres = Json(gData, JsonRequestBehavior.AllowGet);
+
+            //    return jres;
+            //}
+            //ViewData["error"] = "Bitte melden sie sich am System an";
+            //return null;
         }
     }
 
