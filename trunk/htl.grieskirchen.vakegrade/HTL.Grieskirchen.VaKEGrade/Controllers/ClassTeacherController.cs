@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Trirand.Web.Mvc;
 using HTL.Grieskirchen.VaKEGrade.Models;
+using HTL.Grieskirchen.VaKEGrade.Database;
 
 namespace HTL.Grieskirchen.VaKEGrade.Controllers
 {
@@ -34,6 +35,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
             JQGrid pupilGrid = new VaKEGrade.Models.GridModel().PupilGrid;
             pupilGrid.DataUrl = Url.Action("RetrieveAllStudents");
             pupilGrid.EditUrl = Url.Action("EditStudent");
+            pupilGrid.ClientSideEvents.RowSelect = "editRow";
             Session["PupilGModel"] = pupilGrid;
             return pupilGrid;
         }
@@ -45,8 +47,9 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
         public JsonResult RetrieveAllStudents() {
             if (IsAuthorized()) {
-
-                Database.SchoolClass schoolClass = ((Database.Teacher)Session["User"]).PrimaryClasses.First();
+                Teacher user = VaKEGradeRepository.Instance.GetTeacher(((Teacher)Session["User"]).ID);
+                Session["User"] = user;
+                Database.SchoolClass schoolClass = user.PrimaryClasses.First();
                 return GeneratePupilGrid().DataBind(schoolClass.Pupils.AsQueryable());
                 
             }
@@ -70,8 +73,10 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
                 pupilToUpdate.Birthdate = editedPupil.Birthdate;
                 pupilToUpdate.Religion = editedPupil.Religion;
                 pupilToUpdate.Gender = editedPupil.Gender;
-
+              
                 Database.VaKEGradeRepository.Instance.Update();
+
+                var pup = Database.VaKEGradeRepository.Instance.GetPupil(editedPupil.ID);
                 // Update the Order information to match the edited Order data
                 // In this demo we do not need to update the database since we are using Session
                 // In your case you may need to actually hit the database

@@ -11,8 +11,17 @@
     
 	
 
-        <script type="text/javascript">
-            
+   <script type="text/javascript">
+       var lastSelection;
+
+       function editRow(id) {
+           if (id && id !== lastSelection) {
+               var grid = $("#PupilGrid");
+               grid.restoreRow(lastSelection);
+               grid.editRow(id, true);
+               lastSelection = id;
+           }
+       }          
 
    </script>
 
