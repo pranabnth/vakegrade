@@ -33,6 +33,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Models
             genderDropDown.Add(new System.Web.Mvc.SelectListItem() { Text = "Weiblich", Value = "w" });
             pupilGrid = new JQGrid
             {
+                ID = "PupilGrid",
                 Columns = new List<JQGridColumn>()
                                  {
                                      new JQGridColumn { DataField = "ID",
@@ -62,9 +63,9 @@ namespace HTL.Grieskirchen.VaKEGrade.Models
                                                         Editable = true,
                                                         EditType = Trirand.Web.Mvc.EditType.DropDown,
                                                         EditList = genderDropDown,
-                                                        Width = 75 }                           
+                                                        Width = 100 }                           
                                  },
-                Width = Unit.Pixel(640),
+                Width = Unit.Pixel(800),
                 Height = Unit.Percentage(100),
             };
             pupilGrid.ToolBarSettings.ShowAddButton = true;
@@ -77,11 +78,12 @@ namespace HTL.Grieskirchen.VaKEGrade.Models
             List<System.Web.Mvc.SelectListItem> subjectDropDown = new List<System.Web.Mvc.SelectListItem>();
             foreach (Subject subject in VaKEGradeRepository.Instance.GetSubjects())
             {
-                genderDropDown.Add(new System.Web.Mvc.SelectListItem() { Text = subject.Name, Value = subject.ID.ToString() });
+                subjectDropDown.Add(new System.Web.Mvc.SelectListItem() { Text = subject.Name, Value = subject.ID.ToString() });
             }
 
             spfGrid = new JQGrid
             {
+                ID = "SPFGrid",
                 Columns = new List<JQGridColumn>()
                                  {
                                      new JQGridColumn { DataField = "ID",
@@ -89,17 +91,17 @@ namespace HTL.Grieskirchen.VaKEGrade.Models
                                                         PrimaryKey = true,
                                                         Editable = false,
                                                         Width = 50 },                                    
-                                     new JQGridColumn { DataField = "Name",                                                                HeaderText = "Fach", 
+                                     new JQGridColumn { DataField = "Name",                                                                                            HeaderText = "Fach", 
                                                         Editable = true,
                                                         EditType = Trirand.Web.Mvc.EditType.DropDown,
                                                         EditList = subjectDropDown,
                                                         Width = 100 },
                                                         
-                                     new JQGridColumn { DataField = "Level",                                                               HeaderText = "Schulstufe", 
+                                     new JQGridColumn { DataField = "Level",                                                                                           HeaderText = "Schulstufe", 
                                                         Editable = true,
                                                         Width = 100 },
                                  },
-                Width = Unit.Pixel(640),
+                Width = Unit.Pixel(750),
                 Height = Unit.Percentage(100),
             };
             spfGrid.ToolBarSettings.ShowAddButton = true;

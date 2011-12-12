@@ -33,6 +33,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("VaKEGradeModel", "FK_SchoolClass_PrimaryClassTeacher", "Teacher", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(HTL.Grieskirchen.VaKEGrade.Database.Teacher), "SchoolClass", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HTL.Grieskirchen.VaKEGrade.Database.SchoolClass), true)]
 [assembly: EdmRelationshipAttribute("VaKEGradeModel", "FK_SchoolClass_SecondaryClassTeacher", "Teacher", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(HTL.Grieskirchen.VaKEGrade.Database.Teacher), "SchoolClass", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HTL.Grieskirchen.VaKEGrade.Database.SchoolClass), true)]
 [assembly: EdmRelationshipAttribute("VaKEGradeModel", "FK_TeacherSubjectAssignment_SchoolClass", "SchoolClass", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(HTL.Grieskirchen.VaKEGrade.Database.SchoolClass), "TeacherSubjectAssignment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HTL.Grieskirchen.VaKEGrade.Database.TeacherSubjectAssignment), true)]
+[assembly: EdmRelationshipAttribute("VaKEGradeModel", "FK_SubjectArea_Subject", "Subject", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(HTL.Grieskirchen.VaKEGrade.Database.Subject), "SubjectArea", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HTL.Grieskirchen.VaKEGrade.Database.SubjectArea), true)]
 
 #endregion
 
@@ -1951,6 +1952,28 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("VaKEGradeModel", "FK_SubjectArea_Subject", "SubjectArea")]
+        public EntityCollection<SubjectArea> SubjectAreas
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<SubjectArea>("VaKEGradeModel.FK_SubjectArea_Subject", "SubjectArea");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<SubjectArea>("VaKEGradeModel.FK_SubjectArea_Subject", "SubjectArea", value);
+                }
+            }
+        }
 
         #endregion
     }
@@ -2080,6 +2103,44 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Grade>("VaKEGradeModel.FK_Grade_SubjectArea", "Grade", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("VaKEGradeModel", "FK_SubjectArea_Subject", "Subject")]
+        public Subject Subject
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Subject>("VaKEGradeModel.FK_SubjectArea_Subject", "Subject").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Subject>("VaKEGradeModel.FK_SubjectArea_Subject", "Subject").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Subject> SubjectReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Subject>("VaKEGradeModel.FK_SubjectArea_Subject", "Subject");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Subject>("VaKEGradeModel.FK_SubjectArea_Subject", "Subject", value);
                 }
             }
         }
