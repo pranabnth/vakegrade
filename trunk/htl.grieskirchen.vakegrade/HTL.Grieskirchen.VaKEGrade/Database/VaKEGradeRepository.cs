@@ -241,6 +241,16 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
                 
         #endregion
 
+        #region SPF
+
+        public IQueryable GetFormattedSPFs(int pupilID) {
+            Pupil pupil = GetPupil(pupilID);
+            return (from spf in pupil.SPFs
+                    select new { ID = spf.ID, Level = spf.Level, Name = spf.Subject.Name }).AsQueryable();
+        }
+
+        #endregion
+
         #region Branch
 
         public Branch GetBranch(int id) {
