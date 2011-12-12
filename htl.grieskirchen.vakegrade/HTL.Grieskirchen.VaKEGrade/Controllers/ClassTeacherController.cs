@@ -37,18 +37,21 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
             model.PupilGrid.DataUrl = Url.Action("RetrieveAllStudents");
             model.PupilGrid.EditUrl = Url.Action("EditStudent");
             model.PupilGrid.ClientSideEvents.RowSelect = "editRow";
-            model.PupilGrid.ID = "PupilsGrid";
+            model.PupilGrid.ClientSideEvents.SubGridRowExpanded = "showSPFSubGrid";
+
+            //model.PupilGrid.ID = "PupilsGrid";
 
             model.PupilGrid.HierarchySettings.HierarchyMode = HierarchyMode.Parent;
             model.PupilGrid.HierarchySettings.ReloadOnExpand = true;
             model.PupilGrid.HierarchySettings.SelectOnExpand = true;
-            model.PupilGrid.HierarchySettings.ExpandOnLoad = true;
+            model.PupilGrid.HierarchySettings.ExpandOnLoad = false;
             model.PupilGrid.HierarchySettings.PlusIcon = "ui-icon-plus";
             model.PupilGrid.HierarchySettings.MinusIcon = "ui-icon-minus";
             model.PupilGrid.HierarchySettings.OpenIcon = "ui-icon-carat-1-sw";
 
-            model.SpfGrid.ID = "SPFGrid";
+            //model.SpfGrid.ID = "SPFGrid";
             model.SpfGrid.DataUrl = Url.Action("RetrieveSPFs");
+            model.SpfGrid.EditUrl = Url.Action("EditSPF");
             model.SpfGrid.HierarchySettings.HierarchyMode = HierarchyMode.Child;
 
 
@@ -118,6 +121,8 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
             }
         }
 
-
+        public void EditSPF(object editedSPF) {
+        
+        }
     }
 }
