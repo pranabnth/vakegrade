@@ -20,6 +20,11 @@ namespace HTL.Grieskirchen.VaKEGrade.Utility
            
 
             Chart chart = new Chart();
+            chart.RenderType = RenderType.ImageTag;
+            chart.AntiAliasing = AntiAliasingStyles.All;
+            chart.TextAntiAliasingQuality = TextAntiAliasingQuality.High;
+            chart.Titles.Add(pupil.FirstName + " " + pupil.LastName);
+            chart.Titles[0].Font = new System.Drawing.Font("Arial", 16f);
 
             List<Subject> subjects = (from grade in pupil.Grades
                                   select grade.SubjectArea.Subject).Distinct().ToList();
@@ -29,8 +34,16 @@ namespace HTL.Grieskirchen.VaKEGrade.Utility
                 ChartArea chartArea = new ChartArea(subject.Name);
                 chartArea.AxisX = new Axis();
                 chartArea.AxisY = new Axis();
+                chartArea.AxisY.Maximum = 5;
+                chartArea.AxisY.Minimum = 0;
+                chartArea.AxisX.TitleFont = new System.Drawing.Font("Arial", 12f);
+                chartArea.AxisY.TitleFont = new System.Drawing.Font("Arial", 12f);
+                chartArea.AxisX.LabelStyle.Font = new System.Drawing.Font("Arial", 10f);
+                chartArea.AxisX.LabelStyle.Angle = -90;
+                chartArea.BackColor = System.Drawing.Color.White;
 
-                Series series = new Series();
+                Series series = new Series("");
+                series.ChartType = SeriesChartType.Column;
                 series.XValueType = ChartValueType.String;
                 series.YValueType = ChartValueType.Int32;
 
@@ -43,8 +56,8 @@ namespace HTL.Grieskirchen.VaKEGrade.Utility
                 chart.ChartAreas.Add(chartArea);
                 chart.Series.Add(series);
             }
-            chart.Width = Unit.Pixel(800);
-            chart.Height = Unit.Pixel(600);
+            chart.Width = Unit.Pixel(400);
+            chart.Height = Unit.Pixel(200);
             MemoryStream stream = new MemoryStream();
             chart.SaveImage(stream);
             stream.Seek(0,SeekOrigin.Begin);
