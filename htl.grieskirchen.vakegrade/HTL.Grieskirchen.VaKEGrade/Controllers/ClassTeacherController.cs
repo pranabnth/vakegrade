@@ -179,21 +179,17 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
             }
         }
 
-        public void GenerateCertificates() {
-
-            Document document = new Document();
-            FileStream stream = new FileStream("C:\\Users\\Philipp\\Desktop\\Certificates.pdf", FileMode.Create);
-            PdfWriter writer = PdfWriter.GetInstance(document, stream);
-            document.Open();
-            document.AddCreationDate();
+        public FileStreamResult GenerateCertificates()
+        {
             Teacher teacher = VaKEGradeRepository.Instance.GetTeacher(((Teacher)Session["User"]).ID);
             Session["User"] = teacher;
-            foreach (Pupil pupil in teacher.PrimaryClasses.First().Pupils) {
-                document.Add(new Paragraph("Schüler: " + pupil.FirstName + " " + pupil.LastName));
-                document.Add(ImageGenerator.GenerateImage(pupil));
-            }
-
-            document.Close();
+            SchoolClass schoolClass = teacher.PrimaryClasses.First();
+            string schoolYear = DateTime.Now.AddYears(-1).Year + "/" + DateTime.Now.Year;
+            
+            HttpContext.Response.AddHeader("content-disposition",
+            "attachment; filename=Zeugnisse_"+ schoolYear +"_"+ schoolClass.Level + schoolClass.Name +".pdf");
+                        
+            return new FileStreamResult(CertificateGenerator.GeneratePDF(teacher, schoolClass, schoolYear), "application/pdf");
         }
     }
 }
