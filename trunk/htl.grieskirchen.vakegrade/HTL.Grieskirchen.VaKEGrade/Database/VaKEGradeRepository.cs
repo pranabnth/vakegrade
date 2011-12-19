@@ -243,10 +243,21 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
 
         #region SPF
 
-        public IQueryable GetFormattedSPFs(int pupilID) {
+        public SPF GetSPF(int id) {
+            return (from spf in entities.SPFs
+                    where spf.ID == id
+                    select spf).FirstOrDefault();
+        }
+
+        public IQueryable<SPF> GetSPFs() {
+            return entities.SPFs;
+        }
+
+        public IQueryable GetFormattedSPFs(int pupilID)
+        {
             Pupil pupil = GetPupil(pupilID);
             return (from spf in pupil.SPFs
-                    select new { ID = spf.ID, Level = spf.Level, Name = spf.Subject.Name }).AsQueryable();
+                    select new Utility.WebSPF { ID = spf.ID, SubjectID = spf.SubjectID, PupilID = spf.PupilID, Level = spf.Level, SubjectName = spf.Subject.Name }).AsQueryable();
         }
 
         #endregion
@@ -323,6 +334,12 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
             entities.SaveChanges();
         }
 
+        public void AssignSPF(int pupilID, int subjectID, int level)
+        {
+            entities.AddToSPFs(new SPF() { PupilID = pupilID, SubjectID = subjectID, Level = level });
+            entities.SaveChanges();
+        }
+
         public void AssignGrade(Pupil pupil, SubjectArea subjectArea, int grade) {
             entities.AddToGrades(new Grade() { Pupil = pupil, SubjectArea = subjectArea, Value = grade });
             entities.SaveChanges();
@@ -347,7 +364,11 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
             
         }
 
-
+        public void DeleteSPF(int id) {
+            SPF spf = GetSPF(id);
+            entities.DeleteObject(spf);
+            entities.SaveChanges();
+        }
 
 
         

@@ -90,8 +90,17 @@ namespace HTL.Grieskirchen.VaKEGrade.Models
                                                         Visible = false,
                                                         PrimaryKey = true,
                                                         Editable = false,
-                                                        Width = 50 },                                    
-                                     new JQGridColumn { DataField = "Name",                                                                                            HeaderText = "Fach", 
+                                                        Width = 50 }, 
+                                     new JQGridColumn { DataField = "PupilID",
+                                                        Visible = false,
+                                                        Editable = false,
+                                                        Width = 50
+                                                       }, 
+                                     new JQGridColumn { DataField = "SubjectID",
+                                                        Visible = false,
+                                                        Editable = false,
+                                                        Width = 50 }, 
+                                     new JQGridColumn { DataField = "SubjectName",                                                                       HeaderText = "Fach", 
                                                         Editable = true,
                                                         EditType = Trirand.Web.Mvc.EditType.DropDown,
                                                         EditList = subjectDropDown,
@@ -101,9 +110,10 @@ namespace HTL.Grieskirchen.VaKEGrade.Models
                                                         Editable = true,
                                                         Width = 100 },
                                  },
-                Width = Unit.Pixel(750),
+                Width = Unit.Pixel(400),
                 Height = Unit.Percentage(100),
             };
+
             spfGrid.ToolBarSettings.ShowAddButton = true;
             spfGrid.ToolBarSettings.ShowDeleteButton = true;
             spfGrid.EditDialogSettings.CloseAfterEditing = true;
