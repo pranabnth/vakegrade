@@ -370,7 +370,16 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
             entities.SaveChanges();
         }
 
+        public IEnumerable<Subject> GetSubjectsOfPupil(Pupil pupil) {
+            return (from grade in pupil.Grades
+                    select grade.SubjectArea.Subject).Distinct();
+        }
 
+        public IEnumerable<Grade> GetGradesOfPupil(Pupil pupil, Subject subject) {
+            return (from grade in pupil.Grades
+                    where grade.SubjectArea.SubjectID == subject.ID
+                    select grade);
+        }
         
     }
 }
