@@ -12,14 +12,24 @@
 	
 
    <script type="text/javascript">
-       var lastSelection;
+       var lastPupilSelection;
+       var lastSPFSelection;
 
-       function editRow(id) {
-           if (id && id !== lastSelection) {
+       function editPupilRow(id) {
+           if (id) {
                var grid = $("#PupilGrid");
-               grid.restoreRow(lastSelection);
+               grid.restoreRow(lastPupilSelection);
                grid.editRow(id, true);
-               lastSelection = id;
+               lastPupilSelection = id;
+           }
+       }
+
+       function editSPFRow(id) {
+           if (id) {
+               var grid = $(this);
+               grid.restoreRow(lastSPFSelection);
+               grid.editRow(id, true, null, null, null, { 'pupilID': lastPupilSelection });
+               lastSPFSelection = id;
            }
        }
 
@@ -66,7 +76,7 @@
     <div id="classes">
     </div>
 
-    <h3><a href="#">Zeugnisse drucken</a></h3>
+    <h3><a href="/ClassTeacher/GenerateCertificates">Zeugnisse drucken</a></h3>
     <div></div>
     </div>
    
