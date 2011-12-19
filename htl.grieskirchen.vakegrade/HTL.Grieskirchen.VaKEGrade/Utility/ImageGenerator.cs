@@ -36,21 +36,26 @@ namespace HTL.Grieskirchen.VaKEGrade.Utility
                 chartArea.AxisY = new Axis();
                 chartArea.AxisY.Maximum = 5;
                 chartArea.AxisY.Minimum = 0;
+                chartArea.AxisY.CustomLabels.Add(new CustomLabel(0, 1, "5", 4, LabelMarkStyle.None));
+                chartArea.AxisY.CustomLabels.Add(new CustomLabel(1, 2, "4", 3, LabelMarkStyle.None));
+                chartArea.AxisY.CustomLabels.Add(new CustomLabel(2, 3, "3", 2, LabelMarkStyle.None));
+                chartArea.AxisY.CustomLabels.Add(new CustomLabel(3, 4, "2", 1, LabelMarkStyle.None));
+                chartArea.AxisY.CustomLabels.Add(new CustomLabel(4, 5, "1", 0, LabelMarkStyle.None));
                 chartArea.AxisX.TitleFont = new System.Drawing.Font("Arial", 12f);
                 chartArea.AxisY.TitleFont = new System.Drawing.Font("Arial", 12f);
                 chartArea.AxisX.LabelStyle.Font = new System.Drawing.Font("Arial", 10f);
-                chartArea.AxisX.LabelStyle.Angle = -90;
+                //chartArea.AxisX.LabelStyle.Angle = -90;
                 chartArea.BackColor = System.Drawing.Color.White;
 
                 Series series = new Series("");
                 series.ChartType = SeriesChartType.Column;
                 series.XValueType = ChartValueType.String;
                 series.YValueType = ChartValueType.Int32;
-
+                
                 chart.Series.Add("");
                 foreach (Grade grade in pupil.Grades)
                 {
-                    series.Points.AddXY(grade.SubjectArea.Name, grade.Value);
+                    series.Points.AddXY(grade.SubjectArea.Name, 6-grade.Value);
                 }
 
                 chart.ChartAreas.Add(chartArea);
