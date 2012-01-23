@@ -15,13 +15,76 @@
        var lastPupilSelection;
        var lastSPFSelection;
 
+       $(document).ready(function () {
+           jQuery("#pupils").jqGrid({
+               url: '/ClassTeacher/RetrieveAllStudents',
+               datatype: 'json',
+               mtype: 'POST',
+               colNames: ['Nachname', 'Vorname', 'Religion', 'Geburtsdatum', 'Geschlecht'],
+               colModel: [
+               // { name: 'ID', index: 'ID', width: 40, align: 'left', visible: false, editable: false },
+                     {name: 'LastName', index: 'LastName', width: 100, align: 'left', editable: true },
+                     { name: 'FirstName', index: 'FirstName', width: 100, align: 'left', editable: true },
+                     { name: 'Religion', index: 'Religion', width: 100, align: 'left', editable: true },
+                     { name: 'Birthdate', index: 'Birthdate', width: 100, align: 'left', editable: true, editoptions: {
+                         size: 10, maxlengh: 10,
+                         dataInit: function (element) {
+                             $(element).datepicker({ dateFormat: 'dd.mm.yy', constrainInput: false, showOn: 'focus', buttonText: '...' });
+                         }
+                     }
+                     },
+                     { name: 'Gender', index: 'Gender', width: 100, align: 'left', editable: true, edittype: 'select', editoptions: { value: "m:männlich;w:weiblich"} }
+                     ],
+               rowNum: 10,
+               rowList: [5, 10, 20, 50],
+               sortname: 'Id',
+               sortorder: 'desc',
+               viewrecords: true,
+               editurl: '/ClassTeacher/EditStudent',
+               pager: '#pupilsPager',
+               //imgpath: '/scripts/themes/coffee/images',
+               caption: 'Schülerliste',
+               autowidth: true,
+               onSelectRow: editPupilRow
+           }).navGrid('#pupilsPager',null, false, true, true, true, true);
+           
+       });
+
+       function updateSPFGrid(pupilID) {
+           var subjects = $.ajax({ url: '/ClassTeacher/RetrieveAllSubjects', async: false, success: function (data, result) { if (!result) alert('Failure to retrieve the Countries.'); } }).responseText;
+           jQuery("#spfs").jqGrid({
+               url: '/ClassTeacher/RetrieveSPFs?pupilID='+pupilID,
+               datatype: 'json',
+               mtype: 'POST',
+               colNames: ['Gegenstand', 'Schulstufe'],
+               colModel: [
+               // { name: 'ID', index: 'ID', width: 40, align: 'left', visible: false, editable: false },
+                     {name: 'Subject', index: 'Subject', width: 100, align: 'left', editable: true, edittype: "select", editrules: { required: true }, editoptions: { size: subjects.length} },
+                     { name: 'Level', index: 'Level', width: 100, align: 'left', editable: true },
+                     ],
+               rowNum: 10,
+               rowList: [5, 10, 20, 50],
+               sortname: 'Id',
+               sortorder: 'desc',
+               viewrecords: true,
+               editurl: '/ClassTeacher/EditSPF',
+               //imgpath: '/scripts/themes/coffee/images',
+               caption: 'SPFs',
+               autowidth: true,
+               onSelectRow: editSPFRow,
+               loadComplete: function() {
+$('#spfs').setColProp('Subject', { editoptions: { value: subjects} });}
+           });
+       }
+
        function editPupilRow(id) {
            if (id) {
-               var grid = $("#PupilGrid");
+               var grid = $("#pupils");
                grid.restoreRow(lastPupilSelection);
                grid.editRow(id, true);
                lastPupilSelection = id;
            }
+           updateSPFGrid(id);
        }
 
        function editSPFRow(id) {
@@ -60,18 +123,12 @@
     <h3><a href="#">Schülerdaten bearbeiten</a></h3>
         
     <div>
-           <%= Html.Trirand().JQGrid((JQGrid)Session["PupilGModel"], "PupilGrid") %>
-           <%= Html.Trirand().JQGrid((JQGrid)Session["SPFGModel"], "SPFGrid") %>
+           <table id="pupils"></table>
+           <table id="spfs"></table>
+           <%--<%= Html.Trirand().JQGrid((JQGrid)Session["PupilGModel"], "PupilGrid") %>
+           <%= Html.Trirand().JQGrid((JQGrid)Session["SPFGModel"], "SPFGrid") %>--%>
     </div>
-    <%= Html.Trirand().JQDatePicker(
-            new JQDatePicker 
-            { 
-                DisplayMode = DatePickerDisplayMode.ControlEditor,
-                ShowOn = ShowOn.Focus,                    
-                DateFormat = "dd/MM/yyyy"
-            }, "DatePicker")
-    %>
-
+     <div id="pupilsPager"></div>
     <h3><a href="#">Schüler benoten</a></h3>
     <div id="classes">
     </div>

@@ -161,6 +161,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
                 throw new EntryNotFoundException("Pupil with ID \"" + id + "\" does not exist");
             pupil.VoluntarySubjectAssignements.Clear();
             pupil.Grades.Clear();
+            pupil.SPFs.Clear();
             entities.DeleteObject(pupil);
             entities.SaveChanges();
         }
@@ -249,15 +250,16 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
                     select spf).FirstOrDefault();
         }
 
-        public IQueryable<SPF> GetSPFs() {
+        public IEnumerable<SPF> GetSPFs()
+        {
             return entities.SPFs;
         }
 
-        public IQueryable GetFormattedSPFs(int pupilID)
+        public IEnumerable<Utility.WebSPF> GetFormattedSPFs(int pupilID)
         {
             Pupil pupil = GetPupil(pupilID);
             return (from spf in pupil.SPFs
-                    select new Utility.WebSPF { ID = spf.ID, SubjectID = spf.SubjectID, PupilID = spf.PupilID, Level = spf.Level, SubjectName = spf.Subject.Name }).AsQueryable();
+                    select new Utility.WebSPF { ID = spf.ID, SubjectID = spf.SubjectID, PupilID = spf.PupilID, Level = spf.Level, SubjectName = spf.Subject.Name });
         }
 
         #endregion
@@ -368,6 +370,11 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
             SPF spf = GetSPF(id);
             entities.DeleteObject(spf);
             entities.SaveChanges();
+        }
+
+        public IEnumerable<Subject> GetSubjectsOfClass(SchoolClass schoolClass) {
+            return (from bsa in schoolClass.Branch.BranchSubjectAssignments
+                    select bsa.Subject);
         }
 
         public IEnumerable<Subject> GetSubjectsOfPupil(Pupil pupil) {
