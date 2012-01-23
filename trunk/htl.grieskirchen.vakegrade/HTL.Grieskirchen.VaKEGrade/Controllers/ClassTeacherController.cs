@@ -79,13 +79,25 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
             return Session["User"] != null && Session["Role"].ToString() == "ClassTeacher";
         }
 
+        [HttpPost]
         public JsonResult RetrieveAllStudents() {
             if (IsAuthorized()) {
                 Teacher user = VaKEGradeRepository.Instance.GetTeacher(((Teacher)Session["User"]).ID);
                 Session["User"] = user;
-                Database.SchoolClass schoolClass = user.PrimaryClasses.First();
-                return GenerateGrids().PupilGrid.DataBind(schoolClass.Pupils.AsQueryable());
+                List<Database.Pupil> pupils = user.PrimaryClasses.First().Pupils.ToList();
                 
+                GridData gData = new GridData() { page = 1 };
+                List<RowData> rows = new List<RowData>();
+
+                foreach (Database.Pupil pupil in pupils)
+                {
+                    rows.Add(new RowData() { id = pupil.ID, cell = new string[] { pupil.LastName, pupil.FirstName, pupil.Religion, pupil.Birthdate.ToShortDateString(), pupil.Gender } });
+                }
+
+                gData.records = rows.Count();
+                gData.total = rows.Count();
+                gData.rows = rows.ToArray();
+                return Json(gData, JsonRequestBehavior.AllowGet);
             }
             return null;
         }
@@ -95,16 +107,51 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
         /// </summary>
         /// <param name="parentRowID">The ID of the student</param>
         /// <returns>A JsonResult containing the student's SPFs</returns>
-        public JsonResult RetrieveSPFs(string parentRowID)
+        [HttpPost]
+        public JsonResult RetrieveSPFs(int pupilID)
         {
             if (IsAuthorized())
             {
                 Teacher user = VaKEGradeRepository.Instance.GetTeacher(((Teacher)Session["User"]).ID);
                 Session["User"] = user;
-                Pupil pupil = VaKEGradeRepository.Instance.GetPupil(Convert.ToInt32(parentRowID));
-                Session["SelPupilID"] = pupil.ID;
-                return GenerateGrids().SpfGrid.DataBind(VaKEGradeRepository.Instance.GetFormattedSPFs(Convert.ToInt32(parentRowID)));
+                Pupil pupil = VaKEGradeRepository.Instance.GetPupil(pupilID);
+                //Session["SelPupilID"] = pupil.ID;
+                List<Database.SPF> spfs = pupil.SPFs.ToList();
+
+                GridData gData = new GridData() { page = 1 };
+                List<RowData> rows = new List<RowData>();
+
+                foreach (Utility.WebSPF spf in spfs)
+                {
+                    rows.Add(new RowData() { id = spf.ID, cell = new string[] { spf.Subject.Name, spf.Level.ToString() } });
+                }
+
+                gData.records = rows.Count();
+                gData.total = rows.Count();
+                gData.rows = rows.ToArray();
+
+                return Json(gData, JsonRequestBehavior.AllowGet);
             }
+            return null;
+        }
+
+        public JsonResult RetrieveAllSubjects()
+        {
+            if (IsAuthorized())
+            {
+                Teacher user = VaKEGradeRepository.Instance.GetTeacher(((Teacher)Session["User"]).ID);
+                Session["User"] = user;
+                List<Subject> subjects = VaKEGradeRepository.Instance.GetSubjectsOfClass(user.PrimaryClasses.First()).ToList();
+
+                List<System.Web.Mvc.SelectListItem> items = new List<System.Web.Mvc.SelectListItem>();
+                foreach (Subject subject in subjects)
+                {
+                    items.Add(new System.Web.Mvc.SelectListItem() { Text = subject.Name, Value = subject.ID.ToString() });
+                }
+
+                return Json(items, JsonRequestBehavior.AllowGet);
+            }
+            ViewData["error"] = "Bitte melden sie sich am System an";
             return null;
         }
 
