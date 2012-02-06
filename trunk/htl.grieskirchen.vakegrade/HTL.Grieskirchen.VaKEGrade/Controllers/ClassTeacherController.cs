@@ -28,46 +28,11 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
                 Utility.GridData gData = new Utility.GridData();
                 List<Database.SchoolClass> classes = Database.VaKEGradeRepository.Instance.GetClassesOfTeacher(teacher).ToList();
         //    ordersGrid.EditUrl = Url.Action("EditRowInline_EditRow");
-                GenerateGrids();
+                //GenerateGrids();
                 return View(classes);
             }
             ViewData["error"] = "Bitte melden sie sich am System an";
             return Redirect("/Home/");
-        }
-
-
-        /// <summary>
-        /// Generates all needed grids
-        /// </summary>
-        /// <returns>Returns a GridModel containing the needed Grids</returns>
-        public GridModel GenerateGrids() {
-            GridModel model = new GridModel();
-
-            model.PupilGrid.DataUrl = Url.Action("RetrieveAllStudents");
-            model.PupilGrid.EditUrl = Url.Action("EditStudent");
-            model.PupilGrid.ClientSideEvents.RowSelect = "editPupilRow";
-            model.PupilGrid.ClientSideEvents.SubGridRowExpanded = "showSPFSubGrid";
-
-            //model.PupilGrid.ID = "PupilsGrid";
-
-            model.PupilGrid.HierarchySettings.HierarchyMode = HierarchyMode.Parent;
-            model.PupilGrid.HierarchySettings.ReloadOnExpand = true;
-            model.PupilGrid.HierarchySettings.SelectOnExpand = true;
-            model.PupilGrid.HierarchySettings.ExpandOnLoad = false;
-            model.PupilGrid.HierarchySettings.PlusIcon = "ui-icon-plus";
-            model.PupilGrid.HierarchySettings.MinusIcon = "ui-icon-minus";
-            model.PupilGrid.HierarchySettings.OpenIcon = "ui-icon-carat-1-sw";
-
-            //model.SpfGrid.ID = "SPFGrid";
-            model.SpfGrid.DataUrl = Url.Action("RetrieveSPFs");
-            model.SpfGrid.EditUrl = Url.Action("EditSPF");
-            model.SpfGrid.ClientSideEvents.RowSelect = "editSPFRow";
-            model.SpfGrid.HierarchySettings.HierarchyMode = HierarchyMode.Child;
-
-
-            Session["PupilGModel"] = model.PupilGrid;
-            Session["SPFGModel"] = model.SpfGrid;
-            return model;
         }
 
         /// <summary>
@@ -116,40 +81,43 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
                 Session["User"] = user;
                 Pupil pupil = VaKEGradeRepository.Instance.GetPupil(pupilID);
                 //Session["SelPupilID"] = pupil.ID;
-                List<Database.SPF> spfs = pupil.SPFs.ToList();
-
-                GridData gData = new GridData() { page = 1 };
-                List<RowData> rows = new List<RowData>();
-
-                foreach (Utility.WebSPF spf in spfs)
+                if (pupil != null)
                 {
-                    rows.Add(new RowData() { id = spf.ID, cell = new string[] { spf.Subject.Name, spf.Level.ToString() } });
+                    List<Database.SPF> spfs = pupil.SPFs.ToList();
+                    GridData gData = new GridData() { page = 1 };
+                    List<RowData> rows = new List<RowData>();
+
+                    foreach (SPF spf in spfs)
+                    {
+                        rows.Add(new RowData() { id = spf.ID, cell = new string[] { spf.SubjectID.ToString(), spf.Level.ToString() } });
+                    }
+
+                    gData.records = rows.Count();
+                    gData.total = rows.Count();
+                    gData.rows = rows.ToArray();
+
+                    return Json(gData, JsonRequestBehavior.AllowGet);
                 }
-
-                gData.records = rows.Count();
-                gData.total = rows.Count();
-                gData.rows = rows.ToArray();
-
-                return Json(gData, JsonRequestBehavior.AllowGet);
+                return null;
             }
             return null;
         }
 
-        public JsonResult RetrieveAllSubjects()
+        public string RetrieveAllSubjects()
         {
             if (IsAuthorized())
             {
                 Teacher user = VaKEGradeRepository.Instance.GetTeacher(((Teacher)Session["User"]).ID);
                 Session["User"] = user;
                 List<Subject> subjects = VaKEGradeRepository.Instance.GetSubjectsOfClass(user.PrimaryClasses.First()).ToList();
-
-                List<System.Web.Mvc.SelectListItem> items = new List<System.Web.Mvc.SelectListItem>();
+                string content = "<select>";
                 foreach (Subject subject in subjects)
                 {
-                    items.Add(new System.Web.Mvc.SelectListItem() { Text = subject.Name, Value = subject.ID.ToString() });
+                   content += "<option value='"+subject.ID+"'>"+subject.Name+"</option>";
                 }
-
-                return Json(items, JsonRequestBehavior.AllowGet);
+                content += "</select>";
+                //content += "\"}";//}";
+                return content;
             }
             ViewData["error"] = "Bitte melden sie sich am System an";
             return null;
@@ -163,9 +131,9 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
         {
             if (IsAuthorized())
             {
-                var pupilModel = GenerateGrids().PupilGrid;
-
-                if (pupilModel.AjaxCallBackMode == AjaxCallBackMode.EditRow)
+                //var pupilModel = GenerateGrids().PupilGrid;
+                string oper = Request.Params.Get("oper");
+                if (oper == "edit")
                 {
                     Database.Pupil pupilToUpdate = Database.VaKEGradeRepository.Instance.GetPupil(editedPupil.ID);
 
@@ -177,7 +145,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
                     Database.VaKEGradeRepository.Instance.Update();
                 }
-                if (pupilModel.AjaxCallBackMode == AjaxCallBackMode.AddRow)
+                if (oper == "add")
                 {
                     Pupil newPupil = new Pupil();
                     newPupil.FirstName = editedPupil.FirstName;
@@ -188,7 +156,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
                     newPupil.SchoolClass = ((Teacher)Session["User"]).PrimaryClasses.First();
                     VaKEGradeRepository.Instance.AddPupil(newPupil);
                 }
-                if (pupilModel.AjaxCallBackMode == AjaxCallBackMode.DeleteRow)
+                if (oper == "del")
                 {
                     VaKEGradeRepository.Instance.DeletePupil(editedPupil.ID);
                 }
@@ -198,28 +166,29 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
         /// Method called by the SPFGrid to add/update/delete an SPF
         /// </summary>
         /// <param name="editedSPF">The SPF to be added/updated/deleted</param>
-        public void EditSPF(Utility.WebSPF editedSPF)
+        public void EditSPF(SPF editedSPF, Pupil pupil)
         {
-            
+            string oper = Request.Params.Get("oper");
+            //string pupilID = Request.Params.Get("pupilID");
             if (IsAuthorized())
             {
-                var spfModel = GenerateGrids().SpfGrid;
+                //var spfModel = GenerateGrids().SpfGrid;
 
-                if (spfModel.AjaxCallBackMode == AjaxCallBackMode.EditRow)
+                if (oper == "edit")
                 {
                     SPF spfToUpdate = VaKEGradeRepository.Instance.GetSPF(editedSPF.ID);
 
-                    spfToUpdate.PupilID = editedSPF.PupilID;
-                    spfToUpdate.SubjectID = Convert.ToInt32(editedSPF.SubjectName);
+                    spfToUpdate.PupilID = pupil.ID;
+                   
                     spfToUpdate.Level = editedSPF.Level;
 
                     VaKEGradeRepository.Instance.Update();
                 }
-                if (spfModel.AjaxCallBackMode == AjaxCallBackMode.AddRow)
+                if (oper == "add")
                 {
-                     VaKEGradeRepository.Instance.AssignSPF(Convert.ToInt32(Session["SelPupilID"]), Convert.ToInt32(editedSPF.SubjectName), editedSPF.Level);
+                     VaKEGradeRepository.Instance.AssignSPF(Convert.ToInt32(pupil.ID), Convert.ToInt32(editedSPF.SubjectID), editedSPF.Level);
                 }
-                if (spfModel.AjaxCallBackMode == AjaxCallBackMode.DeleteRow)
+                if (oper == "del")
                 {
                     VaKEGradeRepository.Instance.DeleteSPF(editedSPF.ID);
                 }
