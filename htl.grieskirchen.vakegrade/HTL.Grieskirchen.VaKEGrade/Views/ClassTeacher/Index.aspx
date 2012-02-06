@@ -23,10 +23,10 @@
                colNames: ['Nachname', 'Vorname', 'Religion', 'Geburtsdatum', 'Geschlecht'],
                colModel: [
                // { name: 'ID', index: 'ID', width: 40, align: 'left', visible: false, editable: false },
-                     {name: 'LastName', index: 'LastName', width: 100, align: 'left', editable: true },
-                     { name: 'FirstName', index: 'FirstName', width: 100, align: 'left', editable: true },
-                     { name: 'Religion', index: 'Religion', width: 100, align: 'left', editable: true },
-                     { name: 'Birthdate', index: 'Birthdate', width: 100, align: 'left', editable: true, editoptions: {
+                     {name: 'LastName', index: 'LastName', width: 150, align: 'left', editable: true },
+                     { name: 'FirstName', index: 'FirstName', width: 150, align: 'left', editable: true },
+                     { name: 'Religion', index: 'Religion', width: 150, align: 'left', editable: true },
+                     { name: 'Birthdate', index: 'Birthdate', width: 150, align: 'left', editable: true, editoptions: {
                          size: 10, maxlengh: 10,
                          dataInit: function (element) {
                              $(element).datepicker({ dateFormat: 'dd.mm.yy', constrainInput: false, showOn: 'focus', buttonText: '...' });
@@ -42,24 +42,19 @@
                viewrecords: true,
                editurl: '/ClassTeacher/EditStudent',
                pager: '#pupilsPager',
-               //imgpath: '/scripts/themes/coffee/images',
                caption: 'Schülerliste',
-               autowidth: true,
+               height: "auto",
+               width: "700px",
                onSelectRow: editPupilRow
-           }).navGrid('#pupilsPager',null, false, true, true, true, true);
-           
-       });
-
-       function updateSPFGrid(pupilID) {
-           var subjects = $.ajax({ url: '/ClassTeacher/RetrieveAllSubjects', async: false, success: function (data, result) { if (!result) alert('Failure to retrieve the Countries.'); } }).responseText;
+           }).navGrid('#pupilsPager', { add: true, edit: false, del: true, refresh: true, view: false, search: false, closeAfterEdit: true, closeAfterAdd: true, closeOnEscape: true });
            jQuery("#spfs").jqGrid({
-               url: '/ClassTeacher/RetrieveSPFs?pupilID='+pupilID,
+               url: '/ClassTeacher/RetrieveSPFs?pupilID=0',
                datatype: 'json',
                mtype: 'POST',
                colNames: ['Gegenstand', 'Schulstufe'],
                colModel: [
                // { name: 'ID', index: 'ID', width: 40, align: 'left', visible: false, editable: false },
-                     {name: 'Subject', index: 'Subject', width: 100, align: 'left', editable: true, edittype: "select", editrules: { required: true }, editoptions: { size: subjects.length} },
+                     {name: 'SubjectID', index: 'SubjectID', width: 100, align: 'left', editable: true, edittype: "select", editrules: { required: true }, editoptions: { dataUrl: '/ClassTeacher/RetrieveAllSubjects'} },
                      { name: 'Level', index: 'Level', width: 100, align: 'left', editable: true },
                      ],
                rowNum: 10,
@@ -70,11 +65,18 @@
                editurl: '/ClassTeacher/EditSPF',
                //imgpath: '/scripts/themes/coffee/images',
                caption: 'SPFs',
-               autowidth: true,
-               onSelectRow: editSPFRow,
-               loadComplete: function() {
-$('#spfs').setColProp('Subject', { editoptions: { value: subjects} });}
-           });
+               height: "auto",
+               pager: '#spfsPager',
+               onSelectRow: editSPFRow
+           }).navGrid('#spfsPager', { add: true, edit: false, del: true, refresh: true, view: false, search: false, closeAfterEdit:true, closeAfterAdd: true, closeOnEscape: true });
+           $("#pupilsPager_center").remove();
+           $("#pupilsPager_right").remove();
+           $("#spfsPager_center").remove();
+           $("#spfsPager_right").remove();
+       });
+
+       function updateSPFGrid(pupilID) {
+           jQuery("#spfs").setGridParam({ url: '/ClassTeacher/RetrieveSPFs?pupilID=' + pupilID }).trigger("reloadGrid");
        }
 
        function editPupilRow(id) {
@@ -89,19 +91,21 @@ $('#spfs').setColProp('Subject', { editoptions: { value: subjects} });}
 
        function editSPFRow(id) {
            if (id) {
-               var grid = $(this);
+               var grid = $("#spfs");
+               
+               grid.setGridParam({ url: '/ClassTeacher/EditSPF?pupilID='+lastPupilSelection});
                grid.restoreRow(lastSPFSelection);
-               grid.editRow(id, true, null, null, null, { 'pupilID': lastPupilSelection });
+               grid.editRow(id, true);
                lastSPFSelection = id;
            }
        }
 
-       function showSPFSubGrid(subgrid_id, row_id) {
-           // the "showSubGrid_OrdersGrid" function is autogenerated and available globally on the page by the second child grid. 
-           // Calling it will place the child grid below the parent expanded row and will call the action specified by the DaraUrl property
-           // of the child grid, with ID equal to the ID of the parent expanded row                
-           showSubGrid_SPFGrid(subgrid_id, row_id);
-       }             
+//       function showSPFSubGrid(subgrid_id, row_id) {
+//           // the "showSubGrid_OrdersGrid" function is autogenerated and available globally on the page by the second child grid. 
+//           // Calling it will place the child grid below the parent expanded row and will call the action specified by the DaraUrl property
+//           // of the child grid, with ID equal to the ID of the parent expanded row                
+//           showSubGrid_SPFGrid(subgrid_id, row_id);
+//       }             
 
    </script>
 
@@ -123,12 +127,19 @@ $('#spfs').setColProp('Subject', { editoptions: { value: subjects} });}
     <h3><a href="#">Schülerdaten bearbeiten</a></h3>
         
     <div>
-           <table id="pupils"></table>
-           <table id="spfs"></table>
-           <%--<%= Html.Trirand().JQGrid((JQGrid)Session["PupilGModel"], "PupilGrid") %>
-           <%= Html.Trirand().JQGrid((JQGrid)Session["SPFGModel"], "SPFGrid") %>--%>
+        <table>
+            <tr>
+                <td>
+                    <table id="pupils"></table>
+                    <div id="pupilsPager"></div>
+                </td>
+                <td valign="top">
+                    <table id="spfs"></table>
+                    <div id="spfsPager"></div>
+                </td>
+            </tr>
+        </table>
     </div>
-     <div id="pupilsPager"></div>
     <h3><a href="#">Schüler benoten</a></h3>
     <div id="classes">
     </div>
