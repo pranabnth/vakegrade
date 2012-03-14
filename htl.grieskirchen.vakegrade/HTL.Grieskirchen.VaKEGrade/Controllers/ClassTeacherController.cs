@@ -86,10 +86,11 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
                     List<Database.SPF> spfs = pupil.SPFs.ToList();
                     GridData gData = new GridData() { page = 1 };
                     List<RowData> rows = new List<RowData>();
+                    Session["pupilID"] = pupilID;
 
                     foreach (SPF spf in spfs)
                     {
-                        rows.Add(new RowData() { id = spf.ID, cell = new string[] { spf.SubjectID.ToString(), spf.Level.ToString() } });
+                        rows.Add(new RowData() { id = spf.ID, cell = new string[] { spf.Subject.Name, spf.Level.ToString() } });
                     }
 
                     gData.records = rows.Count();
@@ -116,7 +117,6 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
                    content += "<option value='"+subject.ID+"'>"+subject.Name+"</option>";
                 }
                 content += "</select>";
-                //content += "\"}";//}";
                 return content;
             }
             ViewData["error"] = "Bitte melden sie sich am System an";
@@ -162,14 +162,16 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
                 }
             }
         }
+
+
         /// <summary>
         /// Method called by the SPFGrid to add/update/delete an SPF
         /// </summary>
         /// <param name="editedSPF">The SPF to be added/updated/deleted</param>
-        public void EditSPF(SPF editedSPF, Pupil pupil)
+        public void EditSPF(SPF editedSPF, Pupil pupil, string extraparam)
         {
             string oper = Request.Params.Get("oper");
-            //string pupilID = Request.Params.Get("pupilID");
+            string pupilID = Session["pupilID"].ToString();
             if (IsAuthorized())
             {
                 //var spfModel = GenerateGrids().SpfGrid;
@@ -178,7 +180,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
                 {
                     SPF spfToUpdate = VaKEGradeRepository.Instance.GetSPF(editedSPF.ID);
 
-                    spfToUpdate.PupilID = pupil.ID;
+                    spfToUpdate.SubjectID = editedSPF.SubjectID;
                    
                     spfToUpdate.Level = editedSPF.Level;
 
@@ -186,7 +188,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
                 }
                 if (oper == "add")
                 {
-                     VaKEGradeRepository.Instance.AssignSPF(Convert.ToInt32(pupil.ID), Convert.ToInt32(editedSPF.SubjectID), editedSPF.Level);
+                     VaKEGradeRepository.Instance.AssignSPF(Convert.ToInt32(pupilID), Convert.ToInt32(editedSPF.SubjectID), editedSPF.Level);
                 }
                 if (oper == "del")
                 {

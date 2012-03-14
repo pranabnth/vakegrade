@@ -92,8 +92,8 @@
        function editSPFRow(id) {
            if (id) {
                var grid = $("#spfs");
-               
-               grid.setGridParam({ url: '/ClassTeacher/EditSPF?pupilID='+lastPupilSelection});
+            
+               grid.setGridParam({ url: '/ClassTeacher/EditSPF'});
                grid.restoreRow(lastSPFSelection);
                grid.editRow(id, true);
                lastSPFSelection = id;
