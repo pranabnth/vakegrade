@@ -122,7 +122,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="10" />
           <Property Name="BranchID" Type="int" />
           <Property Name="Level" Type="int" Nullable="false" />
