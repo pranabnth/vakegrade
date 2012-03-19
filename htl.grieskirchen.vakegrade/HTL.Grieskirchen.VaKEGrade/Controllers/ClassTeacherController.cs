@@ -199,6 +199,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
         public FileStreamResult GenerateCertificates()
         {
+
             Teacher teacher = VaKEGradeRepository.Instance.GetTeacher(((Teacher)Session["User"]).ID);
             Session["User"] = teacher;
             SchoolClass schoolClass = teacher.PrimaryClasses.First();

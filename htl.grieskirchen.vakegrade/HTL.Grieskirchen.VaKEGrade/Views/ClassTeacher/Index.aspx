@@ -16,6 +16,7 @@
        var lastSPFSelection;
 
        $(document).ready(function () {
+           jQuery("#accordion").accordion();
            jQuery("#pupils").jqGrid({
                url: '/ClassTeacher/RetrieveAllStudents',
                datatype: 'json',
@@ -68,7 +69,7 @@
                height: "auto",
                pager: '#spfsPager',
                onSelectRow: editSPFRow
-           }).navGrid('#spfsPager', { add: true, edit: false, del: true, refresh: true, view: false, search: false, closeAfterEdit:true, closeAfterAdd: true, closeOnEscape: true });
+           }).navGrid('#spfsPager', { add: true, edit: false, del: true, refresh: true, view: false, search: false, closeAfterEdit: true, closeAfterAdd: true, closeOnEscape: true });
            $("#pupilsPager_center").remove();
            $("#pupilsPager_right").remove();
            $("#spfsPager_center").remove();
@@ -122,10 +123,9 @@
   
 
     
-
-    <div id="accordion">
-    <h3><a href="#">Schülerdaten bearbeiten</a></h3>
-        
+    
+    <div id="accordion">    
+    <h3><a href="#">Schülerdaten bearbeiten</a></h3>    
     <div>
         <table>
             <tr>
