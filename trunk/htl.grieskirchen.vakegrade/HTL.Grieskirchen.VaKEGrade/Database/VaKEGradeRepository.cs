@@ -339,8 +339,17 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
             entities.SaveChanges();
         }
 
-        public void AssignGrade(Pupil pupil, SubjectArea subjectArea, int grade) {
+        public void AssignNewGrade(Pupil pupil, SubjectArea subjectArea, int grade) {
             entities.AddToGrades(new Grade() { Pupil = pupil, SubjectArea = subjectArea, Value = grade });
+            entities.SaveChanges();
+        }
+
+        public void AssignGrade(int pupilID, int subjectAreaID, int grade)
+        {
+            Grade grd = (from g in GetSubjectArea(subjectAreaID).Grades
+                           where g.PupilID == pupilID
+                           select g).FirstOrDefault();
+            grd.Value = grade;
             entities.SaveChanges();
         }
 
