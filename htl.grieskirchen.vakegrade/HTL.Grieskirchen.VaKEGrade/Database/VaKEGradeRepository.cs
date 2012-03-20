@@ -149,7 +149,16 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
 
         public void AddPupil(Pupil pupil) {
             entities.AddToPupils(pupil);
+            AddMockGrades(pupil);
             entities.SaveChanges();
+        }
+
+        private void AddMockGrades(Pupil pupil) {
+            foreach (BranchSubjectAssignment bsa in pupil.SchoolClass.Branch.BranchSubjectAssignments) { 
+                foreach(SubjectArea sa in bsa.Subject.SubjectAreas){
+                    AssignNewGrade(pupil, sa, 0);
+                }
+            }
         }
 
         public void DeletePupil(int id) {
@@ -391,6 +400,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         public IEnumerable<Grade> GetGradesOfPupil(Pupil pupil, Subject subject) {
             return (from grade in pupil.Grades
                     where grade.SubjectArea.SubjectID == subject.ID
+                    orderby grade.SubjectArea.Name descending
                     select grade);
         }
         
