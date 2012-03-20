@@ -67,6 +67,24 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
             return null;
         }
 
+        [HttpPost]
+        public string RetrieveAllStudentsHTML()
+        {
+            if (IsAuthorized())
+            {
+                Teacher user = VaKEGradeRepository.Instance.GetTeacher(((Teacher)Session["User"]).ID);
+                Session["User"] = user;
+                List<Database.Pupil> pupils = user.PrimaryClasses.First().Pupils.ToList();
+
+                string html = "";
+                foreach (Pupil pupil in pupils) {
+                    html += "<tr><td><input id=\"chkPrint" + pupil.ID + "\" type=\"checkbox\"></td><td>"+pupil.LastName + " " + pupil.FirstName + "</td></tr>"; 
+                }
+                return html;
+            }
+            return null;
+        }
+
         /// <summary>
         /// Returns all SPFs of a student
         /// </summary>
