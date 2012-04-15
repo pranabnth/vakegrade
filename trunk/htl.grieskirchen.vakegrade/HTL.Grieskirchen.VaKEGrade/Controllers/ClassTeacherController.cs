@@ -78,7 +78,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
                 string html = "";
                 foreach (Pupil pupil in pupils) {
-                    html += "<tr><td><input id=\"chkPrint" + pupil.ID + "\" type=\"checkbox\"></td><td>"+pupil.LastName + " " + pupil.FirstName + "</td></tr>"; 
+                    html += "<tr><td><input id=\"chkPrint" + pupil.ID + "\" type=\"checkbox\" value=\""+pupil.ID+"\"/></td><td>"+pupil.LastName + " " + pupil.FirstName + "</td></tr>"; 
                 }
                 return html;
             }
@@ -221,12 +221,46 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
             Teacher teacher = VaKEGradeRepository.Instance.GetTeacher(((Teacher)Session["User"]).ID);
             Session["User"] = teacher;
             SchoolClass schoolClass = teacher.PrimaryClasses.First();
-            string schoolYear = DateTime.Now.AddYears(-1).Year + "/" + DateTime.Now.Year;
-            
+            string schoolYear;
+            if (DateTime.Now.Month <= 8)
+            {
+                schoolYear = DateTime.Now.AddYears(-1).Year + "/" + DateTime.Now.Year;
+            }
+            else
+            {
+                schoolYear = DateTime.Now.Year + "/" + DateTime.Now.AddYears(1).Year;
+            }
             HttpContext.Response.AddHeader("content-disposition",
             "attachment; filename=Zeugnisse_"+ schoolYear +"_"+ schoolClass.Level + schoolClass.Name +".pdf");
                         
             return new FileStreamResult(CertificateGenerator.GeneratePDF(teacher, schoolClass, schoolYear), "application/pdf");
+        }
+
+
+        public FileStreamResult GenerateSpecificCertificates(string studentIds)
+        {
+            string[] ids = studentIds.Split(new string[]{","}, StringSplitOptions.RemoveEmptyEntries);
+
+            List<Pupil> pupils = new List<Pupil>();
+            foreach (string id in ids) {
+                pupils.Add(VaKEGradeRepository.Instance.GetPupil(int.Parse(id)));
+            }
+
+            Teacher teacher = VaKEGradeRepository.Instance.GetTeacher(((Teacher)Session["User"]).ID);
+            Session["User"] = teacher;
+            SchoolClass schoolClass = teacher.PrimaryClasses.First();
+            string schoolYear;
+            if (DateTime.Now.Month <= 8)
+            {
+                schoolYear = DateTime.Now.AddYears(-1).Year + "/" + DateTime.Now.Year;
+            }
+            else {
+                schoolYear = DateTime.Now.Year + "/" + DateTime.Now.AddYears(1).Year;
+            }
+            HttpContext.Response.AddHeader("content-disposition",
+            "attachment; filename=Zeugnisse_" + schoolYear + "_" + pupils.Select(x=>x.LastName) + ".pdf");
+
+            return new FileStreamResult(CertificateGenerator.GeneratePDF(teacher, schoolClass, pupils, schoolYear), "application/pdf");
         }
     }
 }

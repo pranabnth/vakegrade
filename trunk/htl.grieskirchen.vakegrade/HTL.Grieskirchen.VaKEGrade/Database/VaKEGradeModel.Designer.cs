@@ -716,12 +716,14 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         /// <param name="id">Initial value of the ID property.</param>
         /// <param name="branchID">Initial value of the BranchID property.</param>
         /// <param name="subjectID">Initial value of the SubjectID property.</param>
-        public static BranchSubjectAssignment CreateBranchSubjectAssignment(global::System.Int32 id, global::System.Int32 branchID, global::System.Int32 subjectID)
+        /// <param name="level">Initial value of the Level property.</param>
+        public static BranchSubjectAssignment CreateBranchSubjectAssignment(global::System.Int32 id, global::System.Int32 branchID, global::System.Int32 subjectID, global::System.Int32 level)
         {
             BranchSubjectAssignment branchSubjectAssignment = new BranchSubjectAssignment();
             branchSubjectAssignment.ID = id;
             branchSubjectAssignment.BranchID = branchID;
             branchSubjectAssignment.SubjectID = subjectID;
+            branchSubjectAssignment.Level = level;
             return branchSubjectAssignment;
         }
 
@@ -802,6 +804,30 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         private global::System.Int32 _SubjectID;
         partial void OnSubjectIDChanging(global::System.Int32 value);
         partial void OnSubjectIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Level
+        {
+            get
+            {
+                return _Level;
+            }
+            set
+            {
+                OnLevelChanging(value);
+                ReportPropertyChanging("Level");
+                _Level = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Level");
+                OnLevelChanged();
+            }
+        }
+        private global::System.Int32 _Level;
+        partial void OnLevelChanging(global::System.Int32 value);
+        partial void OnLevelChanged();
 
         #endregion
     
