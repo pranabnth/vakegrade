@@ -168,7 +168,7 @@
             <tr>
                 <td><input type="button" id="actualizePrintCandidates" onclick="receivePupils()" value="Aktualisieren"/></td>
                 <td>
-        <input type="button" id="printCertifcates" onclick="requestCertificates()" value="Zeugnisse drucken"/></td>
+        <input type="button" id="printCertificates" onclick="requestCertificates()" value="Zeugnisse drucken"/></td>
             </tr>
         </table>
     </div>
