@@ -34,6 +34,8 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("VaKEGradeModel", "FK_SchoolClass_SecondaryClassTeacher", "Teacher", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(HTL.Grieskirchen.VaKEGrade.Database.Teacher), "SchoolClass", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HTL.Grieskirchen.VaKEGrade.Database.SchoolClass), true)]
 [assembly: EdmRelationshipAttribute("VaKEGradeModel", "FK_TeacherSubjectAssignment_SchoolClass", "SchoolClass", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(HTL.Grieskirchen.VaKEGrade.Database.SchoolClass), "TeacherSubjectAssignment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HTL.Grieskirchen.VaKEGrade.Database.TeacherSubjectAssignment), true)]
 [assembly: EdmRelationshipAttribute("VaKEGradeModel", "FK_SubjectArea_Subject", "Subject", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(HTL.Grieskirchen.VaKEGrade.Database.Subject), "SubjectArea", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HTL.Grieskirchen.VaKEGrade.Database.SubjectArea), true)]
+[assembly: EdmRelationshipAttribute("VaKEGradeModel", "FK_BindingSubjectAssignments_Pupil", "Pupil", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(HTL.Grieskirchen.VaKEGrade.Database.Pupil), "BindingSubjectAssignment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HTL.Grieskirchen.VaKEGrade.Database.BindingSubjectAssignment), true)]
+[assembly: EdmRelationshipAttribute("VaKEGradeModel", "FK_BindingSubjectAssignments_Subject", "Subject", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(HTL.Grieskirchen.VaKEGrade.Database.Subject), "BindingSubjectAssignment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(HTL.Grieskirchen.VaKEGrade.Database.BindingSubjectAssignment), true)]
 
 #endregion
 
@@ -260,6 +262,22 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
             }
         }
         private ObjectSet<SchoolClass> _SchoolClasses;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<BindingSubjectAssignment> BindingSubjectAssignments
+        {
+            get
+            {
+                if ((_BindingSubjectAssignments == null))
+                {
+                    _BindingSubjectAssignments = base.CreateObjectSet<BindingSubjectAssignment>("BindingSubjectAssignments");
+                }
+                return _BindingSubjectAssignments;
+            }
+        }
+        private ObjectSet<BindingSubjectAssignment> _BindingSubjectAssignments;
 
         #endregion
         #region AddTo Methods
@@ -351,6 +369,14 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         {
             base.AddObject("SchoolClasses", schoolClass);
         }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the BindingSubjectAssignments EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToBindingSubjectAssignments(BindingSubjectAssignment bindingSubjectAssignment)
+        {
+            base.AddObject("BindingSubjectAssignments", bindingSubjectAssignment);
+        }
 
         #endregion
     }
@@ -359,6 +385,192 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
     #endregion
     
     #region Entities
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="VaKEGradeModel", Name="BindingSubjectAssignment")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class BindingSubjectAssignment : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new BindingSubjectAssignment object.
+        /// </summary>
+        /// <param name="id">Initial value of the ID property.</param>
+        /// <param name="pupilID">Initial value of the PupilID property.</param>
+        /// <param name="subjectID">Initial value of the SubjectID property.</param>
+        public static BindingSubjectAssignment CreateBindingSubjectAssignment(global::System.Int32 id, global::System.Int32 pupilID, global::System.Int32 subjectID)
+        {
+            BindingSubjectAssignment bindingSubjectAssignment = new BindingSubjectAssignment();
+            bindingSubjectAssignment.ID = id;
+            bindingSubjectAssignment.PupilID = pupilID;
+            bindingSubjectAssignment.SubjectID = subjectID;
+            return bindingSubjectAssignment;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ID
+        {
+            get
+            {
+                return _ID;
+            }
+            set
+            {
+                if (_ID != value)
+                {
+                    OnIDChanging(value);
+                    ReportPropertyChanging("ID");
+                    _ID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ID");
+                    OnIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ID;
+        partial void OnIDChanging(global::System.Int32 value);
+        partial void OnIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 PupilID
+        {
+            get
+            {
+                return _PupilID;
+            }
+            set
+            {
+                OnPupilIDChanging(value);
+                ReportPropertyChanging("PupilID");
+                _PupilID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("PupilID");
+                OnPupilIDChanged();
+            }
+        }
+        private global::System.Int32 _PupilID;
+        partial void OnPupilIDChanging(global::System.Int32 value);
+        partial void OnPupilIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 SubjectID
+        {
+            get
+            {
+                return _SubjectID;
+            }
+            set
+            {
+                OnSubjectIDChanging(value);
+                ReportPropertyChanging("SubjectID");
+                _SubjectID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("SubjectID");
+                OnSubjectIDChanged();
+            }
+        }
+        private global::System.Int32 _SubjectID;
+        partial void OnSubjectIDChanging(global::System.Int32 value);
+        partial void OnSubjectIDChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("VaKEGradeModel", "FK_BindingSubjectAssignments_Pupil", "Pupil")]
+        public Pupil Pupil
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Pupil>("VaKEGradeModel.FK_BindingSubjectAssignments_Pupil", "Pupil").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Pupil>("VaKEGradeModel.FK_BindingSubjectAssignments_Pupil", "Pupil").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Pupil> PupilReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Pupil>("VaKEGradeModel.FK_BindingSubjectAssignments_Pupil", "Pupil");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Pupil>("VaKEGradeModel.FK_BindingSubjectAssignments_Pupil", "Pupil", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("VaKEGradeModel", "FK_BindingSubjectAssignments_Subject", "Subject")]
+        public Subject Subject
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Subject>("VaKEGradeModel.FK_BindingSubjectAssignments_Subject", "Subject").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Subject>("VaKEGradeModel.FK_BindingSubjectAssignments_Subject", "Subject").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Subject> SubjectReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Subject>("VaKEGradeModel.FK_BindingSubjectAssignments_Subject", "Subject");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Subject>("VaKEGradeModel.FK_BindingSubjectAssignments_Subject", "Subject", value);
+                }
+            }
+        }
+
+        #endregion
+    }
     
     /// <summary>
     /// No Metadata Documentation available.
@@ -1200,6 +1412,28 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("VaKEGradeModel", "FK_BindingSubjectAssignments_Pupil", "BindingSubjectAssignment")]
+        public EntityCollection<BindingSubjectAssignment> BindingSubjectAssignments
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<BindingSubjectAssignment>("VaKEGradeModel.FK_BindingSubjectAssignments_Pupil", "BindingSubjectAssignment");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<BindingSubjectAssignment>("VaKEGradeModel.FK_BindingSubjectAssignments_Pupil", "BindingSubjectAssignment", value);
+                }
+            }
+        }
 
         #endregion
     }
@@ -1971,6 +2205,28 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<SubjectArea>("VaKEGradeModel.FK_SubjectArea_Subject", "SubjectArea", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("VaKEGradeModel", "FK_BindingSubjectAssignments_Subject", "BindingSubjectAssignment")]
+        public EntityCollection<BindingSubjectAssignment> BindingSubjectAssignments
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<BindingSubjectAssignment>("VaKEGradeModel.FK_BindingSubjectAssignments_Subject", "BindingSubjectAssignment");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<BindingSubjectAssignment>("VaKEGradeModel.FK_BindingSubjectAssignments_Subject", "BindingSubjectAssignment", value);
                 }
             }
         }
