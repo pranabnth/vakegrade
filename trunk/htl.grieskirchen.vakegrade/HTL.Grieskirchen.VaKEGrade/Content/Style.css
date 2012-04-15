@@ -58,9 +58,7 @@
 {
     margin-left:2;
     margin-right:2;
-    width:1024;
-    border:5;
-        
+    text-align:center;
 }
 
 .pointer { 
@@ -77,3 +75,43 @@ text-decoration: underline;
 
 
 
+
+
+.gradeTable
+{
+    border-width:thin;
+    border-color:grey;
+    border-style:solid;
+    
+    
+    margin-left:auto;
+    margin-right:auto;
+    text-align: right;
+}
+
+.content
+{
+    margin-left:auto;
+    margin-right:auto;
+    text-align: right;
+}
+
+
+
+.accordion {margin:0; padding:0 10px}
+
+.accordion li {list-style-type:none}
+
+.accordion li.last-child {margin-left:19px; list-style-type:disc}
+
+#side ul.accordion ul {margin:0; padding:0 0 0 20px;}
+
+.accordion .outer {border:1px solid #dadada; border-width:0 1px 1px; background: #fff}
+
+.accordion .inner {margin-bottom:0; padding:.5em 20px 1em; position:relative; overflow:hidden}
+
+.accordion .inner .inner {padding-bottom:0}
+
+.accordion .h {padding-top:.3em} /* vertical padding instead of vertical margin (ie8) */
+
+.accordion p {margin:.5em 1px 1em}

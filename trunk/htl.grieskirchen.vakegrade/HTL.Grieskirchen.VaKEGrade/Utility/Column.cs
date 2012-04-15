@@ -8,35 +8,41 @@ namespace HTL.Grieskirchen.VaKEGrade.Utility
 {
     public class Column
     {
+        bool _editable;
 
-
-        string name;
-
-        public string Name
+        public bool editable
         {
-            get { return name; }
-            set { name = value; }
+            get { return _editable; }
+            set { _editable = value; }
         }
-        string index;
 
-        public string Index
+        string _name;
+
+        public string name
         {
-            get { return index; }
-            set { index = value; }
+            get { return _name; }
+            set { _name = value; }
         }
-        int width;
+        string _index;
 
-        public int Width
+        public string index
         {
-            get { return width; }
-            set { width = value; }
+            get { return _index; }
+            set { _index = value; }
         }
-        string align;
+        int _width;
 
-        public string Align
+        public int width
         {
-            get { return align; }
-            set { align = value; }
+            get { return _width; }
+            set { _width = value; }
+        }
+        string _align;
+
+        public string align
+        {
+            get { return _align; }
+            set { _align = value; }
         }
 
     }

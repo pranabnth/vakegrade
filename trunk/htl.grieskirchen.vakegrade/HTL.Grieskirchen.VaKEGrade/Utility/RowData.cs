@@ -10,7 +10,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Utility
     public class RowData
     {
         public int id { get; set; }
-        public string[] cell;
+        public object cell;
 
     }
 }
