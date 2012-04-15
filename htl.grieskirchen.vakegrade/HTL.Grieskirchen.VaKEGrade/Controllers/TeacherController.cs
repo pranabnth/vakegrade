@@ -28,8 +28,8 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
         public bool IsAuthorized()
         {
-            return Session["User"] != null && Session["Role"].ToString() == "Teacher";
-            //return true;
+            //return Session["User"] != null && Session["Role"].ToString() == "Teacher";
+            return true;
         }
 
         public JsonResult RetrieveClasses()
@@ -72,8 +72,8 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
         public JsonResult RetrieveSubjects()
         {
-            if (IsAuthorized())
-            {
+            //if (IsAuthorized())
+            //{
                 List<Database.Pupil> pupils = VaKEGrade.Database.VaKEGradeRepository.Instance.GetPupils().ToList<Database.Pupil>();
                 GridData gData = new GridData() { page = 1 };
                 List<RowData> rows = new List<RowData>();
@@ -90,9 +90,9 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
                 JsonResult jres = Json(gData, JsonRequestBehavior.AllowGet);
 
                 return jres;
-            }
-            ViewData["error"] = "Bitte melden sie sich am System an";
-            return null;
+            //}
+            //ViewData["error"] = "Bitte melden sie sich am System an";
+            //return null;
         }
 
         public JsonResult RetrieveSubjectsOfClass(int classID)
@@ -113,37 +113,154 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
             return jres;
         }
 
-
         [HttpPost]
-        public JsonResult GenerateGradeGrid(int subjectID, int classID)
+        public JsonResult RetrieveSubArea(int classID, int subjectID)
         {
-            JQGridConf config = new JQGridConf();
-            
+            List<String> subAreas = new List<string>();
             if (subjectID != -1)
             {
 
                 List<Database.SubjectArea> subjectAreas = Database.VaKEGradeRepository.Instance.GetSubject(subjectID).SubjectAreas.ToList<Database.SubjectArea>();
 
-                
+
+
+                subAreas.Add("Name"); 
                 foreach (Database.SubjectArea subAr in subjectAreas)
                 {
-                    config.ColNames.Add(subAr.Name);
-                    config.ColModel.Add(new Column() { Name = subAr.Name, Index = subAr.Name, Align = "left", Width = 40 });
+                    
+                    subAreas.Add(subAr.Name);
+                  
                 }
 
             }
 
-            return Json(config);
+            return Json(subAreas.ToArray());
+        }
+
+        [HttpPost]
+        public JsonResult RetrieveGrades(int classID, int subjectID)
+        {
+            
+            
+
+
+            if (IsAuthorized())
+            {
+                List<Database.Pupil> pupils = VaKEGrade.Database.VaKEGradeRepository.Instance.GetPupils().ToList<Database.Pupil>();
+                List<Database.SubjectArea> subjectAreas = Database.VaKEGradeRepository.Instance.GetSubject(subjectID).SubjectAreas.ToList<Database.SubjectArea>();
+
+
+                List<string[][]> gradeData = new List<string[][]>();
+                List<string[]> stud = new List<string[]>();
+               
+
+                foreach (Database.Pupil pupil in pupils)
+                {
+                    if (pupil.SchoolClass.ID == classID)
+                    {
+                        List<Database.Grade> grades = Database.VaKEGradeRepository.Instance.GetGradesOfPupil(pupil, Database.VaKEGradeRepository.Instance.GetSubject(subjectID)).ToList<Database.Grade>();
+                        stud.Clear();
+
+                        stud.Add(new string[]{ pupil.LastName + " " + pupil.FirstName });
+
+                        
+
+                        foreach (Database.Grade grade in grades)
+                        {
+                             stud.Add(new string[]{grade.Value.ToString(),pupil.ID.ToString(),grade.SubjectAreaID.ToString()});
+                        }
+
+                        gradeData.Add(stud.ToArray());
+                    }
+                }
+
+
+                JsonResult jres = Json(gradeData);
+
+                return jres;
+
+            }
+            return null;
+        
+        
         }
 
 
-        public JsonResult RetrieveGradeData()
+        //[HttpPost]
+        //public JsonResult GenerateGradeGrid(int subjectID, int classID)
+        //{
+        //    JQGridConf config = new JQGridConf();
+            
+        //    if (subjectID != -1)
+        //    {
+
+        //        List<Database.SubjectArea> subjectAreas = Database.VaKEGradeRepository.Instance.GetSubject(subjectID).SubjectAreas.ToList<Database.SubjectArea>();
+
+
+        //        config.ColNames.Add("Schüler");
+        //        config.ColModel.Add(new Column() { name = "student", index = "student", align = "left", width = 150 });
+                
+        //        foreach (Database.SubjectArea subAr in subjectAreas)
+        //        {
+        //            config.ColNames.Add(subAr.Name);
+        //            config.ColModel.Add(new Column() { name = subAr.Name, index = subAr.ID.ToString(), align = "left", width = 40, editable = true });
+        //        }
+
+        //    }
+
+        //    return Json(config);
+        //}
+
+
+        //public JsonResult RetrieveGradeData(int classID, int subjectID)
+        //{
+        //    if (IsAuthorized())
+        //    {
+        //        List<Database.Pupil> pupils = VaKEGrade.Database.VaKEGradeRepository.Instance.GetPupils().ToList<Database.Pupil>();
+        //        List<Database.SubjectArea> subjectAreas = Database.VaKEGradeRepository.Instance.GetSubject(subjectID).SubjectAreas.ToList<Database.SubjectArea>();
+                
+
+        //        GridData gData = new GridData() { page = 1 };
+        //        List<object> rows = new List<object>();
+        //        List<object> gradeStrings = new List<object>();
+
+        //        foreach (Database.Pupil pupil in pupils)
+        //        {
+        //            if (pupil.SchoolClass.ID == classID)
+        //            {
+        //                List<Database.Grade> grades = Database.VaKEGradeRepository.Instance.GetGradesOfPupil(pupil,Database.VaKEGradeRepository.Instance.GetSubject(subjectID)).ToList<Database.Grade>();
+        //                gradeStrings.Clear();
+
+        //                gradeStrings.Add(new{student = pupil.LastName + " " + pupil.FirstName});
+
+        //                foreach (Database.Grade grade in grades)
+        //                {
+        //                    gradeStrings.Add(grade.Value.ToString());
+        //                }
+
+        //                rows.Add(new { id = pupil.ID, cell = new{student = pupil.LastName + " " + pupil.FirstName} });
+        //            }
+        //        }
+
+        //        gData.records = rows.Count();
+        //        gData.total = rows.Count();
+        //        gData.rows = rows.ToArray();
+
+        //        JsonResult jres = Json(gData, JsonRequestBehavior.AllowGet);
+
+        //        return jres;
+
+        //    }
+        //    return null;
+        //}
+
+        [HttpPost]
+        public string EditGrades(int value, int studId, int arId)
         {
-            if (IsAuthorized())
-            {
-                return Json("bbbrr");
-            }
-            return null;
+             
+             Database.VaKEGradeRepository.Instance.AssignGrade(studId, arId, value);
+
+             return "success";
         }
     }
 

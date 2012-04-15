@@ -10,6 +10,8 @@
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+    <script src="http://www.appelsiini.net/download/jquery.jeditable.mini.js"></script>
+    <script src="../../Scripts/KeyTable.min.js"></script>
 
     <link href="../../Content/Style.css" rel="stylesheet" type="text/css" />
     <%--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>--%>

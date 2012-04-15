@@ -115,6 +115,9 @@
     <Content Include="Scripts\grid.locale-de.js" />
     <Content Include="Scripts\jquery-1.6.4.js" />
     <Content Include="Scripts\jquery.jqGrid.min.js" />
+    <Content Include="Scripts\jquery.tableEditor.js" />
+    <Content Include="Scripts\jquery.nestedAccordion.js" />
+    <Content Include="Scripts\KeyTable.min.js" />
     <Content Include="Views\Admin\Index.aspx" />
     <Content Include="Views\Authentification\Index.aspx" />
     <Content Include="Views\ClassTeacher\Index.aspx" />
@@ -173,7 +176,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>4895</DevelopmentServerPort>
+          <DevelopmentServerPort>31564</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/HTL.Grieskirchen.VaKEGrade</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
