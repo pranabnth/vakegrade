@@ -258,7 +258,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
                 schoolYear = DateTime.Now.Year + "/" + DateTime.Now.AddYears(1).Year;
             };
             HttpContext.Response.AddHeader("content-disposition",
-            "attachment; filename=Zeugnisse_" + schoolYear + "_" + studentIds.Remove(studentIds.Length-1) + ".pdf");
+            "attachment; filename=Zeugnisse_" + schoolYear + "_" + studentIds.Remove(studentIds.Length-1).Replace(',','_')+ ".pdf");
 
             return new FileStreamResult(CertificateGenerator.GeneratePDF(teacher, schoolClass, pupils, schoolYear), "application/pdf");
         }
