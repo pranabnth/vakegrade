@@ -28,8 +28,8 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
         public bool IsAuthorized()
         {
-            //return Session["User"] != null && Session["Role"].ToString() == "Teacher";
-            return true;
+            return Session["User"] != null && (Session["Role"].ToString() == "Teacher" || Session["Role"].ToString() == "ClassTeacher") ;
+            
         }
 
         public JsonResult RetrieveClasses()

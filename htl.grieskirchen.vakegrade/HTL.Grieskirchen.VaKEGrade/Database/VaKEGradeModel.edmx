@@ -113,6 +113,7 @@
           <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="BranchID" Type="int" Nullable="false" />
           <Property Name="SubjectID" Type="int" Nullable="false" />
+          <Property Name="Level" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Grade">
           <Key>
@@ -522,6 +523,7 @@
           <Property Name="SubjectID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Branch" Relationship="VaKEGradeModel.FK_BranchSubjectAssignment_Branch" FromRole="BranchSubjectAssignment" ToRole="Branch" />
           <NavigationProperty Name="Subject" Relationship="VaKEGradeModel.FK_BranchSubjectAssignment_Subject" FromRole="BranchSubjectAssignment" ToRole="Subject" />
+          <Property Type="Int32" Name="Level" Nullable="false" />
         </EntityType>
         <EntityType Name="Grade">
           <Key>
@@ -874,7 +876,8 @@
             <ScalarProperty Name="Name" ColumnName="Name" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="BranchSubjectAssignments"><EntityTypeMapping TypeName="VaKEGradeModel.BranchSubjectAssignment"><MappingFragment StoreEntitySet="BranchSubjectAssignment">
-            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
             <ScalarProperty Name="BranchID" ColumnName="BranchID" />
             <ScalarProperty Name="SubjectID" ColumnName="SubjectID" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>

@@ -120,8 +120,16 @@
            if (checked) {
                window.open("/ClassTeacher/GenerateCertificates");
            } else {
-               var students = $('input[id^="chkPrint"][:checked="checked"]');
-               alert(students.length);
+               var studentIds = "";
+               $("#printCandidates :checked").each(function () {
+
+                   studentIds = studentIds+$(this).val() + ",";
+               });
+
+               if (studentIds != "") {
+                   window.open("/ClassTeacher/GenerateSpecificCertificates?studentIds=" + studentIds);
+               }
+                
            }
        }
 //       function showSPFSubGrid(subgrid_id, row_id) {
@@ -164,7 +172,10 @@
         </table>
     </div>
     <h3><a href="#">Schüler benoten</a></h3>
-    <div id="classes">
+    <div>
+        <form action="/Teacher/">
+            <input type="submit" value="Noten eingeben"/>
+        </form>
     </div>
 
     <h3 onclick="receivePupils()"><a href="#">Zeugnisse drucken</a></h3>
@@ -174,8 +185,10 @@
         Alle Zeugnisse drucken
         </label>
         <p>Zeugnisse für folgende Schüler drucken:</p>
+        <div id="printc">
         <table id="printCandidates" border="1px">            
         </table>
+        </div>
         <table>
             <tr>
                 <td><input type="button" id="actualizePrintCandidates" onclick="receivePupils()" value="Aktualisieren"/></td>

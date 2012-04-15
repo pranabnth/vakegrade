@@ -362,8 +362,8 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
             entities.SaveChanges();
         }
 
-        public void AssignSubject(Branch branch, Subject subject) {
-            entities.AddToBranchSubjectAssignments(new BranchSubjectAssignment() { Branch = branch, Subject = subject });
+        public void AssignSubject(Branch branch, Subject subject, int level) {
+            entities.AddToBranchSubjectAssignments(new BranchSubjectAssignment() { Branch = branch, Subject = subject, Level = level });
             entities.SaveChanges();
         }
 

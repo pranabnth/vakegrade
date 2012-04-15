@@ -30,7 +30,30 @@ namespace HTL.Grieskirchen.VaKEGrade.Utility
             document.AddAuthor("VaKEGrade");
             document.AddTitle("Certificate");
 
-            foreach (Pupil pupil in teacher.PrimaryClasses.First().Pupils)
+            foreach (Pupil pupil in teacher.PrimaryClasses.First().Pupils.OrderBy(x => x.LastName).ToList())
+            {
+                CertificateGenerator.GenerateCertificate(pupil, schoolClass, schoolYear, ref document);
+            }
+            document.Close();
+            stream.Seek(0, SeekOrigin.Begin);
+            return stream;
+        }
+
+        public static MemoryStream GeneratePDF(Teacher teacher, SchoolClass schoolClass, List<Pupil> pupils, string schoolYear)
+        {
+
+            Document document = new Document();
+            MemoryStream stream = new MemoryStream();
+            PdfWriter writer = PdfWriter.GetInstance(document, stream);
+
+            writer.CloseStream = false;
+            document.Open();
+            document.AddCreationDate();
+            document.AddAuthor("VaKEGrade");
+            document.AddTitle("Certificate");
+
+            pupils = pupils.OrderBy(x => x.LastName).ToList();
+            foreach (Pupil pupil in pupils)
             {
                 CertificateGenerator.GenerateCertificate(pupil, schoolClass, schoolYear, ref document);
             }
