@@ -227,6 +227,13 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
                     select subject).FirstOrDefault();
         }
 
+        public Subject GetSubject(string name)
+        {
+            return (from subject in entities.Subjects
+                    where subject.Name == name
+                    select subject).FirstOrDefault();
+        }
+
         public IQueryable<Subject> GetSubjects() {
             return entities.Subjects;
         }
