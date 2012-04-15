@@ -187,6 +187,13 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
                     select schoolclass).FirstOrDefault();
         }
 
+        public SchoolClass GetClass(string name)
+        {
+            return (from schoolclass in entities.SchoolClasses
+                    where schoolclass.Name == name
+                    select schoolclass).FirstOrDefault();
+        }
+
         //public SchoolClass GetClassOfClassTeacher(Teacher teacher) {
           
         //}
