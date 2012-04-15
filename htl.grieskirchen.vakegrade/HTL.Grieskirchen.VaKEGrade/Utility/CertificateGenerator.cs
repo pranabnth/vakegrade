@@ -40,7 +40,19 @@ namespace HTL.Grieskirchen.VaKEGrade.Utility
         }
 
         private static void GenerateCertificate(Pupil pupil, string schoolYear, ref Document document) {
-            Paragraph paragraph = new Paragraph("Zeugnis", bigFont);
+            Paragraph paragraph;
+            paragraph = new Paragraph("Alternative Form der Leistungsbeurteilung gemäß § 78 SchUG", FontFactory.GetFont("Calibri", 10f, 1));
+            paragraph.Alignment = 1;
+
+            paragraph = new Paragraph("HAUPTSCHULE 1 RIED IM INNKREIS", FontFactory.GetFont("Calibri", 18f, 1));
+            paragraph.Alignment = 1;
+            
+            document.Add(paragraph);
+            paragraph = new Paragraph("HAUPTSCHULE 1 RIED IM INNKREIS", FontFactory.GetFont("Calibri", 18f, 1));
+            paragraph.Alignment = 1;
+
+            document.Add(paragraph);
+            paragraph = new Paragraph("Zeugnis", bigFont);
             paragraph.Alignment = 1;
             document.Add(paragraph);
             paragraph = new Paragraph("Schuljahr "+schoolYear, smallFont);
