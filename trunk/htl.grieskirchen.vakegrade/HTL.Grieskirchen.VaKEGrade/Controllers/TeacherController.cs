@@ -35,28 +35,31 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
         public JsonResult RetrieveClasses()
         {
-
-            List<Database.SchoolClass> classes = new List<Database.SchoolClass>();
+            Teacher teacher = (Teacher)Session["User"];
+            List<SchoolClass> classes = teacher.TeacherSubjectAssignments.Select(x => x.SchoolClass).Distinct().ToList();
+            if (teacher.PrimaryClasses.Count > 0 && !classes.Contains(teacher.PrimaryClasses.ToList()[0])) {
+                classes.Add(teacher.PrimaryClasses.ToList()[0]);
+            }
             List<string[]> res = new List<string[]>();
-                bool existing;
-                foreach (Database.TeacherSubjectAssignment teacher_class in ((Database.Teacher)Session["User"]).TeacherSubjectAssignments)
+            
+                foreach (SchoolClass schoolClass in classes)
                 {
-                    existing = false;
-                    foreach (Database.SchoolClass toComp in classes)
-                    {
-                        if (toComp.ID == teacher_class.SchoolClass.ID)
-                        {
-                            existing = true;
-                            break;
-                        }
+                    
+                    //existing = false;
+                    //foreach (Database.SchoolClass toComp in classes)
+                    //{
+                    //    if (toComp.ID == tsa.SchoolClass.ID)
+                    //    {
+                    //        existing = true;
+                    //        break;
+                    //    }
 
 
-                    }
-                    if (!existing)
-                    {
-                        classes.Add(teacher_class.SchoolClass);
-                        res.Add(new string[] { teacher_class.SchoolClass.Level + "" + teacher_class.SchoolClass.Name, teacher_class.SchoolClass.ID.ToString() });
-                    }
+                    //}
+                    //if (!existing)
+                    //{
+                        res.Add(new string[] { schoolClass.Level + "" + schoolClass.Name, schoolClass.ID.ToString() });
+                    //}
 
 
                 }
