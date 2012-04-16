@@ -77,10 +77,10 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
         {
             //if (IsAuthorized())
             //{
-                List<Database.Pupil> pupils = VaKEGrade.Database.VaKEGradeRepository.Instance.GetPupils().ToList<Database.Pupil>();
+                List<Database.Pupil> pupils = VaKEGrade.Database.VaKEGradeRepository.Instance.GetPupils().OrderBy(x=>x.LastName).ToList<Database.Pupil>();
                 GridData gData = new GridData() { page = 1 };
                 List<RowData> rows = new List<RowData>();
-
+                
                 foreach (Database.Pupil pupil in pupils)
                 {
                     rows.Add(new RowData() { id = pupil.ID, cell = new string[] { pupil.LastName, pupil.FirstName, pupil.Birthdate.ToString(), pupil.Gender } });
@@ -103,14 +103,16 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
             Teacher teacher = (Teacher)Session["user"];
             SchoolClass schoolClass = VaKEGradeRepository.Instance.GetClass(classID);
             List<Database.Subject> subjects;
-            if (schoolClass.PrimaryClassTeacherID == teacher.ID) {
+            if (schoolClass.PrimaryClassTeacherID == teacher.ID)
+            {
                 subjects = VaKEGradeRepository.Instance.GetSubjectsOfClass(schoolClass).ToList();
             }
             else
             {
                 subjects = Database.VaKEGradeRepository.Instance.GetSubjectsOfTeacher(teacher.ID, classID).ToList<Database.Subject>();
             }
-            
+
+            subjects = subjects.OrderBy(x => x.Name).ToList();
             List<string[]> res = new List<string[]>();
 
             foreach (Database.Subject sub in subjects) {
@@ -156,32 +158,30 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
             if (IsAuthorized())
             {
-                List<Database.Pupil> pupils = VaKEGrade.Database.VaKEGradeRepository.Instance.GetPupils().ToList<Database.Pupil>();
-                List<Database.SubjectArea> subjectAreas = Database.VaKEGradeRepository.Instance.GetSubject(subjectID).SubjectAreas.ToList<Database.SubjectArea>();
+                List<Database.Pupil> pupils = VaKEGrade.Database.VaKEGradeRepository.Instance.GetClass(classID).Pupils.OrderBy(x=>x.LastName).ToList();
+                List<Database.SubjectArea> subjectAreas = Database.VaKEGradeRepository.Instance.GetSubject(subjectID).SubjectAreas.OrderBy(x=>x.Name).ToList<Database.SubjectArea>();
 
 
                 List<string[][]> gradeData = new List<string[][]>();
                 List<string[]> stud = new List<string[]>();
-               
+
 
                 foreach (Database.Pupil pupil in pupils)
                 {
-                    if (pupil.SchoolClass.ID == classID)
+                    List<Database.Grade> grades = Database.VaKEGradeRepository.Instance.GetGradesOfPupil(pupil, Database.VaKEGradeRepository.Instance.GetSubject(subjectID)).ToList<Database.Grade>();
+                    stud.Clear();
+
+                    stud.Add(new string[] { pupil.LastName + " " + pupil.FirstName });
+
+
+
+                    foreach (Database.Grade grade in grades)
                     {
-                        List<Database.Grade> grades = Database.VaKEGradeRepository.Instance.GetGradesOfPupil(pupil, Database.VaKEGradeRepository.Instance.GetSubject(subjectID)).ToList<Database.Grade>();
-                        stud.Clear();
-
-                        stud.Add(new string[]{ pupil.LastName + " " + pupil.FirstName });
-
-                        
-
-                        foreach (Database.Grade grade in grades)
-                        {
-                             stud.Add(new string[]{grade.Value.ToString(),pupil.ID.ToString(),grade.SubjectAreaID.ToString()});
-                        }
-
-                        gradeData.Add(stud.ToArray());
+                        stud.Add(new string[] { grade.Value.ToString(), pupil.ID.ToString(), grade.SubjectAreaID.ToString() });
                     }
+
+                    gradeData.Add(stud.ToArray());
+
                 }
 
 
