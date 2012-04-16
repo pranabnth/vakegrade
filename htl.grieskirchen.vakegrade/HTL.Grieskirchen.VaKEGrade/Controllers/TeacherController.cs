@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using HTL.Grieskirchen.VaKEGrade.Utility;
 using Trirand.Web.Mvc;
 using HTL.Grieskirchen.VaKEGrade.Models;
+using HTL.Grieskirchen.VaKEGrade.Database;
 
 namespace HTL.Grieskirchen.VaKEGrade.Controllers
 {
@@ -35,7 +36,6 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
         public JsonResult RetrieveClasses()
         {
 
-            
             List<Database.SchoolClass> classes = new List<Database.SchoolClass>();
             List<string[]> res = new List<string[]>();
                 bool existing;
@@ -97,9 +97,16 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
         public JsonResult RetrieveSubjectsOfClass(int classID)
         {
-            
-            List<Database.Subject> subjects = Database.VaKEGradeRepository.Instance.GetSubjectsOfTeacher(((Database.Teacher)Session["user"]).ID, classID).ToList<Database.Subject>();
-
+            Teacher teacher = (Teacher)Session["user"];
+            SchoolClass schoolClass = VaKEGradeRepository.Instance.GetClass(classID);
+            List<Database.Subject> subjects;
+            if (schoolClass.PrimaryClassTeacherID == teacher.ID) {
+                subjects = VaKEGradeRepository.Instance.GetSubjectsOfClass(schoolClass).ToList();
+            }
+            else
+            {
+                subjects = Database.VaKEGradeRepository.Instance.GetSubjectsOfTeacher(teacher.ID, classID).ToList<Database.Subject>();
+            }
             
             List<string[]> res = new List<string[]>();
 

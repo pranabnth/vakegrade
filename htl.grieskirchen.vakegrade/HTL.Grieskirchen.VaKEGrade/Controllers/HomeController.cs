@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Collections.Specialized;
 using System.Configuration;
+using HTL.Grieskirchen.VaKEGrade.Utility;
 
 namespace VaKEGrade.Controllers
 {
@@ -14,7 +15,6 @@ namespace VaKEGrade.Controllers
         public ActionResult Index()
         {
             ViewData["Message"] = "Welcome to ASP.NET MVC!";
-
             return View();
         }
 

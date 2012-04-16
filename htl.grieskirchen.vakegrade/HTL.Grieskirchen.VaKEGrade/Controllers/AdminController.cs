@@ -154,7 +154,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
             foreach (Database.SchoolClass sclass in classes)
             {
-                rows.Add(new RowData() { id = sclass.ID, cell = new string[] { sclass.Level.ToString(), sclass.Name, sclass.Teacher.LastName } });
+                rows.Add(new RowData() { id = sclass.ID, cell = new string[] { sclass.Level.ToString(), sclass.Name, sclass.PrimaryClassTeacher.LastName } });
             }
 
             gData.records = rows.Count();

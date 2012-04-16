@@ -1712,7 +1712,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("VaKEGradeModel", "FK_SchoolClass_PrimaryClassTeacher", "Teacher")]
-        public Teacher Teacher
+        public Teacher PrimaryClassTeacher
         {
             get
             {
@@ -1728,7 +1728,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<Teacher> TeacherReference
+        public EntityReference<Teacher> PrimaryClassTeacherReference
         {
             get
             {
@@ -1750,7 +1750,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("VaKEGradeModel", "FK_SchoolClass_SecondaryClassTeacher", "Teacher")]
-        public Teacher Teacher1
+        public Teacher SecondaryClassTeacher
         {
             get
             {
@@ -1766,7 +1766,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<Teacher> Teacher1Reference
+        public EntityReference<Teacher> SecondaryClassTeacherReference
         {
             get
             {
@@ -2034,12 +2034,14 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         /// <param name="id">Initial value of the ID property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="isVoluntary">Initial value of the IsVoluntary property.</param>
-        public static Subject CreateSubject(global::System.Int32 id, global::System.String name, global::System.Boolean isVoluntary)
+        /// <param name="isBinding">Initial value of the IsBinding property.</param>
+        public static Subject CreateSubject(global::System.Int32 id, global::System.String name, global::System.Boolean isVoluntary, global::System.Boolean isBinding)
         {
             Subject subject = new Subject();
             subject.ID = id;
             subject.Name = name;
             subject.IsVoluntary = isVoluntary;
+            subject.IsBinding = isBinding;
             return subject;
         }
 
@@ -2120,6 +2122,30 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         private global::System.Boolean _IsVoluntary;
         partial void OnIsVoluntaryChanging(global::System.Boolean value);
         partial void OnIsVoluntaryChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsBinding
+        {
+            get
+            {
+                return _IsBinding;
+            }
+            set
+            {
+                OnIsBindingChanging(value);
+                ReportPropertyChanging("IsBinding");
+                _IsBinding = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsBinding");
+                OnIsBindingChanged();
+            }
+        }
+        private global::System.Boolean _IsBinding;
+        partial void OnIsBindingChanging(global::System.Boolean value);
+        partial void OnIsBindingChanged();
 
         #endregion
     

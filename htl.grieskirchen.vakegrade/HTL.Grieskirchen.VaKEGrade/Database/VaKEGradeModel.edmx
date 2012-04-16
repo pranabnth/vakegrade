@@ -163,6 +163,7 @@
           <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="IsVoluntary" Type="bit" Nullable="false" />
+          <Property Name="IsBinding" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="SubjectArea">
           <Key>
@@ -577,6 +578,7 @@
           <NavigationProperty Name="VoluntarySubjectAssignements" Relationship="VaKEGradeModel.FK_VoluntarySubjectAssignement_Subject" FromRole="Subject" ToRole="VoluntarySubjectAssignement" />
           <NavigationProperty Name="SubjectAreas" Relationship="VaKEGradeModel.FK_SubjectArea_Subject" FromRole="Subject" ToRole="SubjectArea" />
           <NavigationProperty Name="BindingSubjectAssignments" Relationship="VaKEGradeModel.FK_BindingSubjectAssignments_Subject" FromRole="Subject" ToRole="BindingSubjectAssignment" />
+          <Property Type="Boolean" Name="IsBinding" Nullable="false" />
         </EntityType>
         <EntityType Name="SubjectArea">
           <Key>
@@ -755,8 +757,8 @@
           <Property Type="Int32" Name="SecondaryClassTeacherID" />
           <NavigationProperty Name="Branch" Relationship="VaKEGradeModel.FK_SchoolClass_Branch" FromRole="SchoolClass" ToRole="Branch" />
           <NavigationProperty Name="Pupils" Relationship="VaKEGradeModel.FK_Pupil_SchoolClass" FromRole="SchoolClass" ToRole="Pupil" />
-          <NavigationProperty Name="Teacher" Relationship="VaKEGradeModel.FK_SchoolClass_PrimaryClassTeacher" FromRole="SchoolClass" ToRole="Teacher" />
-          <NavigationProperty Name="Teacher1" Relationship="VaKEGradeModel.FK_SchoolClass_SecondaryClassTeacher" FromRole="SchoolClass" ToRole="Teacher" />
+          <NavigationProperty Name="PrimaryClassTeacher" Relationship="VaKEGradeModel.FK_SchoolClass_PrimaryClassTeacher" FromRole="SchoolClass" ToRole="Teacher" />
+          <NavigationProperty Name="SecondaryClassTeacher" Relationship="VaKEGradeModel.FK_SchoolClass_SecondaryClassTeacher" FromRole="SchoolClass" ToRole="Teacher" />
           <NavigationProperty Name="TeacherSubjectAssignments" Relationship="VaKEGradeModel.FK_TeacherSubjectAssignment_SchoolClass" FromRole="SchoolClass" ToRole="TeacherSubjectAssignment" />
         </EntityType>
         <Association Name="FK_SchoolClass_Branch">
@@ -903,7 +905,8 @@
             <ScalarProperty Name="Level" ColumnName="Level" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Subjects"><EntityTypeMapping TypeName="VaKEGradeModel.Subject"><MappingFragment StoreEntitySet="Subject">
-            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="IsBinding" ColumnName="IsBinding" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
             <ScalarProperty Name="Name" ColumnName="Name" />
             <ScalarProperty Name="IsVoluntary" ColumnName="IsVoluntary" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>

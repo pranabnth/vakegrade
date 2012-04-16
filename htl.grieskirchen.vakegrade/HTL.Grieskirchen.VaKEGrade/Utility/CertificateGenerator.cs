@@ -228,7 +228,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Utility
             cell.HorizontalAlignment = Element.ALIGN_LEFT;
             table.AddCell(cell);
 
-            cell = new PdfPCell(new Paragraph(schoolClass.Teacher.FirstName + " " + schoolClass.Teacher.LastName, FontFactory.GetFont("Arial", 9f, 0)));
+            cell = new PdfPCell(new Paragraph(schoolClass.PrimaryClassTeacher.FirstName + " " + schoolClass.PrimaryClassTeacher.LastName, FontFactory.GetFont("Arial", 9f, 0)));
             cell.BorderWidth = 0;
             cell.Padding = 0;
             cell.BorderWidthLeft = 0;
@@ -301,8 +301,8 @@ namespace HTL.Grieskirchen.VaKEGrade.Utility
                 chart.ChartAreas.Add(chartArea);
                 chart.Series.Add(series);
             }
-            
-            
+
+
             chart.Width = Unit.Pixel(1000);
             chart.Height = Unit.Pixel(250*subjects.Count);
             MemoryStream stream = new MemoryStream();

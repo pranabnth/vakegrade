@@ -100,6 +100,7 @@
     <Compile Include="Models\GridModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\Column.cs" />
+    <Compile Include="Utility\DataGenerator.cs" />
     <Compile Include="Utility\GridData.cs" />
     <Compile Include="Utility\CertificateGenerator.cs" />
     <Compile Include="Utility\JQGridConf.cs" />
