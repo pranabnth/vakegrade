@@ -29,7 +29,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
                 Utility.GridData gData = new Utility.GridData();
                 List<Database.SchoolClass> classes = Database.VaKEGradeRepository.Instance.GetClassesOfTeacher(teacher).ToList();
         //    ordersGrid.EditUrl = Url.Action("EditRowInline_EditRow");
-                //GenerateGrids();
+                //GenerateGrids(
                 return View(classes);
             }
             ViewData["error"] = "Bitte melden sie sich am System an";

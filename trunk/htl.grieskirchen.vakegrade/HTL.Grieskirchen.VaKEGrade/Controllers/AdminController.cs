@@ -83,7 +83,15 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
         }
 
-
+        [HttpPost]
+        public string RetrieveGeneralInfo() {
+            if (IsAuthorized())
+            {
+            return "Wolfgang Schatzl";
+            }
+            ViewData["error"] = "Bitte melden sie sich am System an";
+            return null;
+        }
 
 
         public bool IsAuthorized()
@@ -148,7 +156,13 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
         public JsonResult RetrieveClassList()
         {
-            List<Database.SchoolClass> classes = VaKEGrade.Database.VaKEGradeRepository.Instance.GetClasses().ToList<Database.SchoolClass>();
+            if (IsAuthorized())
+            {
+                try
+                {
+                    List<Database.SchoolClass> classes = VaKEGrade.Database.VaKEGradeRepository.Instance.GetClasses().ToList<Database.SchoolClass>();
+                
+
             GridData gData = new GridData() { page = 1 };
             List<RowData> rows = new List<RowData>();
 
@@ -164,11 +178,18 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
             JsonResult jres = Json(gData, JsonRequestBehavior.AllowGet);
 
             return jres;
+                }
+                catch (Exception e) { }
+            }
+            ViewData["error"] = "Bitte melden sie sich am System an";
+            return null;
 
         }
 
         public string AddEditClass(int level, string label, string teacher, string branch)
         {
+            if (IsAuthorized())
+            {
             Database.SchoolClass newclass = new Database.SchoolClass();
             newclass.Level = level;
             newclass.Name = label;
@@ -197,8 +218,26 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
             VaKEGrade.Database.VaKEGradeRepository.Instance.AddClass(newclass);
 
             return log;
+
+            }
+            ViewData["error"] = "Bitte melden sie sich am System an";
+            return null;
+
         }
 
+
+        public string NewSubjectAssignment(int branchID, string name, int level) {
+
+            try
+            {
+                VaKEGrade.Database.VaKEGradeRepository.Instance.AssignSubject((Database.Branch)VaKEGrade.Database.VaKEGradeRepository.Instance.GetBranch(branchID), (Database.Subject)VaKEGrade.Database.VaKEGradeRepository.Instance.GetSubject(name), level);
+            }
+            catch (Exception ex) {
+                return null;
+            }
+
+            return name;
+        }
 
 
         public JsonResult RetrieveAllSubjects()
@@ -227,6 +266,31 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
             return null;
         }
 
+        [HttpPost]
+        public JsonResult RetrieveBranchSubjects(int branchID) {
+            if (IsAuthorized())
+            {
+            Database.Branch branch = VaKEGrade.Database.VaKEGradeRepository.Instance.GetBranch(branchID);
+
+            List<Database.Subject> subjects = branch.BranchSubjectAssignments.Select(x => x.Subject).Distinct().ToList();
+            List<string> buf = new List<string>();
+
+            
+
+            foreach (Database.Subject sub in subjects)
+            {
+                buf.Add(sub.Name);
+                
+            }
+            
+            return Json(buf.ToArray());
+                }
+            ViewData["error"] = "Bitte melden sie sich am System an";
+            return null;
+        }
+
+
+        [HttpPost]
         public JsonResult RetrieveBranchList()
         {
             if (IsAuthorized())
@@ -258,15 +322,13 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
 
                 foreach (Database.Branch branch in branches)
                 {
-                    List<Database.Subject> subjects = branch.BranchSubjectAssignments.Select(x => x.Subject).Distinct().ToList();
+                    
                     
                     List<string> buf = new List<string>();
                     buf.Add(branch.Name);
                     buf.Add(branch.ID.ToString());
 
-                    foreach (Database.Subject sub in subjects) { 
-                        buf.Add(sub.Name);
-                    }
+                    
 
                     res.Add(buf.ToArray<string>());
                 }
@@ -280,6 +342,43 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
             return null;
         }
 
+        [HttpPost]
+        public string EditSubject(string subName) {
+            try
+            { 
+                
+                VaKEGrade.Database.VaKEGradeRepository.Instance.DeleteSubject(VaKEGrade.Database.VaKEGradeRepository.Instance.GetSubject(subName).ID);
+            }
+
+            catch (Exception ex)
+            {
+                return ex.GetType().ToString();
+            }
+
+            return "succ";
+        }
+
+
+        [HttpPost]
+        public string AddSubject(string subName, bool voluntairy, bool binding) {
+            try
+            {
+                Database.Subject subjectToAdd = new Database.Subject();
+                subjectToAdd.IsVoluntary = voluntairy;
+                subjectToAdd.IsBinding = binding;
+                subjectToAdd.Name = subName;
+
+
+                VaKEGrade.Database.VaKEGradeRepository.Instance.AddSubject(subjectToAdd);
+            }
+
+            catch (Exception ex) {
+                return ex.GetType().ToString();
+            }
+
+            return "succ";
+        }
+
 
         public JsonResult RetrieveSubjects()
         {
@@ -289,12 +388,20 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
                 GridData gData = new GridData() { page = 1 };
                 List<RowData> rows = new List<RowData>();
 
-
+                string obligatoryTranlation = "";
 
                 foreach (Database.Subject subject in subjects)
                 {
+                    if (subject.IsVoluntary)
+                    {
+                        obligatoryTranlation = "Nein";
+                    }
+                    else
+                    {
+                        obligatoryTranlation = "Ja";
+                    }
                     //List<Database.Subject> subjects = branch.BranchSubjectAssignments.Select(x => x.Subject).Distinct().ToList();
-                    rows.Add(new RowData() { id = subject.ID, cell = new string[] { subject.Name, subject.IsVoluntary.ToString(), subject.SPFs.Count.ToString() } });
+                    rows.Add(new RowData() { id = subject.ID, cell = new string[] { subject.Name, obligatoryTranlation, subject.SPFs.Count.ToString() } });
                 }
 
                 gData.records = rows.Count();
