@@ -260,8 +260,13 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
             Subject subject = GetSubject(id);
             if(subject == null)
                 throw new EntryNotFoundException("Subject with ID \"" + id + "\" does not exist");
+            foreach (SubjectArea area in subject.SubjectAreas.ToList()) {
+                area.Grades.Clear();
+                entities.DeleteObject(area);
+            }
             subject.TeacherSubjectAssignments.Clear();
             subject.VoluntarySubjectAssignements.Clear();
+            subject.BindingSubjectAssignments.Clear();
             entities.DeleteObject(subject);
             entities.SaveChanges();
         }
@@ -409,6 +414,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
 
         public IEnumerable<Subject> GetSubjectsOfClass(SchoolClass schoolClass) {
             return (from bsa in schoolClass.Branch.BranchSubjectAssignments
+                    where bsa.Level == schoolClass.Level
                     select bsa.Subject);
         }
 

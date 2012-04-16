@@ -20,8 +20,8 @@ namespace HTL.Grieskirchen.VaKEGrade.Utility
             //AssignBranchSubjects();
             //GenerateTeachers();
             //GenerateClasses();
-            AssignTeacherSubjects();
-            //GeneratePupils();
+            //AssignTeacherSubjects();
+            GeneratePupils();
             
         }
 

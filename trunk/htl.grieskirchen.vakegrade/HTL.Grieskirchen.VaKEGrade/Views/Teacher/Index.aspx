@@ -196,7 +196,7 @@
 
                      $('#subjects').empty();
                      for (var i = 0, len = data.length; i < len; ++i) {
-                         $('#subjects').append('<li class="ui-widget-content">' + data[i][0] + '</li>');
+                         $('#subjects').append('<li class="ui-widget-content" style="width:500px">' + data[i][0] + '</li>');
                      }
 
 
