@@ -19,6 +19,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
         // GET: /ClassTeacher/
 
        
+
         public ActionResult Index()
         {
             
@@ -149,34 +150,40 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
         {
             if (IsAuthorized())
             {
-                //var pupilModel = GenerateGrids().PupilGrid;
-                string oper = Request.Params.Get("oper");
-                if (oper == "edit")
+                try
                 {
-                    Database.Pupil pupilToUpdate = Database.VaKEGradeRepository.Instance.GetPupil(editedPupil.ID);
+                    //var pupilModel = GenerateGrids().PupilGrid;
+                    string oper = Request.Params.Get("oper");
+                    if (oper == "edit")
+                    {
+                        Database.Pupil pupilToUpdate = Database.VaKEGradeRepository.Instance.GetPupil(editedPupil.ID);
 
-                    pupilToUpdate.FirstName = editedPupil.FirstName;
-                    pupilToUpdate.LastName = editedPupil.LastName;
-                    pupilToUpdate.Birthdate = editedPupil.Birthdate;
-                    pupilToUpdate.Religion = editedPupil.Religion;
-                    pupilToUpdate.Gender = editedPupil.Gender;
+                        pupilToUpdate.FirstName = editedPupil.FirstName;
+                        pupilToUpdate.LastName = editedPupil.LastName;
+                        pupilToUpdate.Birthdate = editedPupil.Birthdate;
+                        pupilToUpdate.Religion = editedPupil.Religion;
+                        pupilToUpdate.Gender = editedPupil.Gender;
 
-                    Database.VaKEGradeRepository.Instance.Update();
+                        Database.VaKEGradeRepository.Instance.Update();
+                    }
+                    if (oper == "add")
+                    {
+                        Pupil newPupil = new Pupil();
+                        newPupil.FirstName = editedPupil.FirstName;
+                        newPupil.LastName = editedPupil.LastName;
+                        newPupil.Religion = editedPupil.Religion;
+                        newPupil.Birthdate = editedPupil.Birthdate;
+                        newPupil.Gender = editedPupil.Gender;
+                        newPupil.SchoolClass = ((Teacher)Session["User"]).PrimaryClasses.First();
+                        VaKEGradeRepository.Instance.AddPupil(newPupil);
+                    }
+                    if (oper == "del")
+                    {
+                        VaKEGradeRepository.Instance.DeletePupil(editedPupil.ID);
+                    }
                 }
-                if (oper == "add")
-                {
-                    Pupil newPupil = new Pupil();
-                    newPupil.FirstName = editedPupil.FirstName;
-                    newPupil.LastName = editedPupil.LastName;
-                    newPupil.Religion = editedPupil.Religion;
-                    newPupil.Birthdate = editedPupil.Birthdate;
-                    newPupil.Gender = editedPupil.Gender;
-                    newPupil.SchoolClass = ((Teacher)Session["User"]).PrimaryClasses.First();
-                    VaKEGradeRepository.Instance.AddPupil(newPupil);
-                }
-                if (oper == "del")
-                {
-                    VaKEGradeRepository.Instance.DeletePupil(editedPupil.ID);
+                catch (Exception) {
+                    
                 }
             }
         }
@@ -236,6 +243,10 @@ namespace HTL.Grieskirchen.VaKEGrade.Controllers
             return new FileStreamResult(CertificateGenerator.GeneratePDF(teacher, schoolClass, schoolYear), "application/pdf");
         }
 
+        public ActionResult Generate() {
+            new DataGenerator().GenerateData();
+            return View("Index");
+        }
 
         public FileStreamResult GenerateSpecificCertificates(string studentIds)
         {

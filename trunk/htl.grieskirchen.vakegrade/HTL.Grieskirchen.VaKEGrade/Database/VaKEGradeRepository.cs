@@ -104,14 +104,20 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         /// <param name="teacher">The teacher-object to be added</param>
         /// <exception cref="DuplicateUserException"></exception>
         public void AddTeacher(Teacher teacher) {
-            if (!UserExists(teacher.UserName))
-            {
+            List<Teacher> existing = (from t in entities.Teachers
+                                      where t.UserName == teacher.UserName
+                                      select t).ToList();
+            if (existing.Count > 0) {
+                teacher.UserName += existing.Count + 1;
+            }
+            //if (!UserExists(teacher.UserName))
+            //{
                 entities.AddToTeachers(teacher);
                 entities.SaveChanges();
-            }
-            else {
-                throw new DuplicateUserException("User \"" + teacher.UserName + "\" already exists!");
-            }
+            //}
+            //else {
+            //    throw new DuplicateUserException("User \"" + teacher.UserName + "\" already exists!");
+            //}
         }
 
         /// <summary>
@@ -154,7 +160,7 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         }
 
         private void AddMockGrades(Pupil pupil) {
-            foreach (BranchSubjectAssignment bsa in pupil.SchoolClass.Branch.BranchSubjectAssignments) { 
+            foreach (BranchSubjectAssignment bsa in pupil.SchoolClass.Branch.BranchSubjectAssignments.Where(x=>x.Level==pupil.SchoolClass.Level)) { 
                 foreach(SubjectArea sa in bsa.Subject.SubjectAreas){
                     AssignNewGrade(pupil, sa, 0);
                 }
@@ -381,8 +387,8 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
             entities.SaveChanges();
         }
 
-        public void AssignSubject(Teacher teacher, Subject subject) {
-            entities.AddToTeacherSubjectAssignments(new TeacherSubjectAssignment() { Teacher = teacher, Subject = subject });
+        public void AssignSubject(Teacher teacher, Subject subject, SchoolClass schoolClass) {
+            entities.AddToTeacherSubjectAssignments(new TeacherSubjectAssignment() { Teacher = teacher, Subject = subject, SchoolClass = schoolClass});
             entities.SaveChanges();
         }
 
@@ -407,8 +413,9 @@ namespace HTL.Grieskirchen.VaKEGrade.Database
         }
 
         public IEnumerable<Subject> GetSubjectsOfPupil(Pupil pupil) {
-            return (from grade in pupil.Grades
-                    select grade.SubjectArea.Subject).Distinct();
+            return (from bsa in pupil.SchoolClass.Branch.BranchSubjectAssignments
+                    where bsa.Level == pupil.SchoolClass.Level
+                    select bsa.Subject).ToList();
         }
 
         public IEnumerable<Grade> GetGradesOfPupil(Pupil pupil, Subject subject) {
