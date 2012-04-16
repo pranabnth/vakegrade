@@ -186,7 +186,7 @@
         </label>
         <p>Zeugnisse für folgende Schüler drucken:</p>
         <div id="printc">
-        <table id="printCandidates" border="1px">            
+        <table id="printCandidates" border="0px">            
         </table>
         </div>
         <table>
