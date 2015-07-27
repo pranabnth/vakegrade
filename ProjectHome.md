@@ -1,0 +1,1 @@
+Ziel des Projektes ist es ein webbasiertes alternatives Bewertungssystem für den Schultyp neue Mittelsschule auf basis von ASP.Net MVC 2.0 in Verbindung mit JQuery zu erstellen.
